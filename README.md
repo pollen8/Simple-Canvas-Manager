@@ -6,7 +6,7 @@ Description
 
 * <B>SimpleCanvasManager(node)</B>:
     * This is the SCM constructor.
-    * node is the html div where SCM will work.
+    * node is the html div where SCM will work.<br />
 
 
 * <B>addLayer(name, leyerLevel)</B>:
