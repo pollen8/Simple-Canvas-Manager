@@ -6,9 +6,9 @@ Description
 
 * <B>SimpleCanvasManager(node)</B>:
     * This is the SCM constructor.
-    * node is the html div where SCM will work.<br />
-
-
-* <B>addLayer(name, leyerLevel)</B>:
-    * Add a layer to your node. 
-    * leyerLevel is just a simple z-index.
+    * [node] is the html div where SCM will work.
+<br />
+* <B>addLayer(name, layerLevel)</B>:
+    * Add a layer to your node.
+    * [name] is the name of the new layer.
+    * [leyerLevel] is just a simple z-index.
