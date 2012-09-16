@@ -14,7 +14,7 @@ SimpleCanvasManager Object
     * Add a layer to your node.
     * [name] is the name of the new layer.
     * [layerLevel] is just a simple z-index.
-    * <B>Return a ScmLayer Object.</B>
+    * <B>Return a ScmLayer Object.</B><br /><br />
     
 
 * <B>getLayer(name)</B>:
@@ -26,15 +26,15 @@ ScmLayer Object
 ---------------
 
 * <B>ScmLayer()</B>:
-    * Can't be directly construct. Use SimpleCanvasManager.addLayer();
+    * Can't be directly construct. Use SimpleCanvasManager.addLayer();<br /><br />
     
 
 * <B>getHtmlElement()</B>:
-    * <B>Return the dom Element.</B>
+    * <B>Return the dom Element.</B><br /><br />
 
 
 * <B>getContext(type)</B>:
-    * <B>Return the html object that provides methods and properties for drawing on the canvas.</B>
+    * <B>Return the html object that provides methods and properties for drawing on the canvas.</B><br /><br />
 
 
 * <B>setBackgroundColor(color)</B>:
