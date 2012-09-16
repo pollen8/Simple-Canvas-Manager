@@ -3,9 +3,17 @@ function SimpleCanvasManager(node){
 	
 	if ((this.node = document.getElementById(node)))
 	{
-		this.node.setAttribute("style", "position: relative;");
+		var scmContent = document.createElement('div');
+		
+		scmContent.setAttribute("id", "scmContent");
+		scmContent.setAttribute("width", this.node.clientWidth);
+		scmContent.setAttribute("height", this.node.clientHeight);
+		scmContent.setAttribute("style", "position: absolute;");
+		this.node.appendChild(scmContent);
+		
 		this.width = this.node.clientWidth;
 		this.height = this.node.clientHeight;
+		this.content = document.getElementById("scmContent");
 		this.layers = [];
 	}	
 	else
@@ -18,12 +26,12 @@ SimpleCanvasManager.prototype.addLayer = function(name, zindex, options) { // TO
 	canvas.setAttribute("id", "scm" + name.charAt(0).toUpperCase() + name.slice(1));
 	canvas.setAttribute("width", this.width);
 	canvas.setAttribute("height", this.height);
-	canvas.setAttribute("style", "z-index: " + zindex + ";");
-	canvas.setAttribute("style", "position: absolute;");
+	canvas.setAttribute("style", "z-index: " + zindex + "; position: absolute;");
+	//canvas.setAttribute("style", "position: absolute;");
 	
 	var newLayer = new ScmLayer(this, name, zindex);
 	this.layers.push();
-	this.node.appendChild(canvas);
+	this.content.appendChild(canvas);
 	
 	return newLayer;
 }
@@ -62,6 +70,14 @@ ScmLayer.prototype.setBackgroundColor = function(color) {
 	this.update(ctx);
 }
 
+ScmLayer.prototype.setBackgroundImg = function(src) {	
+	var ctx = this.getContext("2d"),
+		img = new Image();
+		
+ 	img.src = src;
+	ctx.drawImage(img, 0, 0);
+}
+
 ScmLayer.prototype.setAlpha = function(value) {
 	var ctx = this.getContext("2d");
 	
@@ -72,3 +88,5 @@ ScmLayer.prototype.setAlpha = function(value) {
 ScmLayer.prototype.update = function(ctx) {
 	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
 }
+
+// TODO : drawImg, drawShape, clear, resize, intern update

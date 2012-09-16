@@ -2,13 +2,13 @@
 
 Description ... soon
 
-## SCM Documentation
+SCM Documentation
+=================
 
 * <B>SimpleCanvasManager(node)</B>:
     * This is the SCM constructor.
     * [node] is the html div where SCM will work.
 
-<br />
 <br />
 
 * <B>addLayer(name, layerLevel)</B>:
@@ -17,8 +17,6 @@ Description ... soon
     * [layerLevel] is just a simple z-index.
     * <B>Return a ScmLayer Object.</B>
     
-    
-<br />
 <br />
 
 * <B>getLayer(name)</B>:
@@ -26,4 +24,28 @@ Description ... soon
     * [name] is the name of the layer.
     * <B>Return a ScmLayer Object.</B>
     
+ScmLayer Object
+---------------
 
+* <B>ScmLayer()</B>:
+    * Can't be directly construct. Use SimpleCanvasManager.addLayer();
+    
+<br />
+
+* <B>getHtmlElement()</B>:
+    * <B>Return the dom Element.</B>
+
+<br />
+
+* <B>getContext(type)</B>:
+    * <B>Return the html object that provides methods and properties for drawing on the canvas.</B>
+    
+<br />
+
+* <B>setBackgroundColor(color)</B>:
+    * Set the layer's Background color.
+    * [color] : a CSS color value that indicates the fill color of the drawing.
+    * <B>Return a ScmLayer Object.</B>    
+    
+    
+    
