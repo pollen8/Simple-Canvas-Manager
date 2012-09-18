@@ -27,7 +27,6 @@ SimpleCanvasManager.prototype.addLayer = function(name, zindex, options) { // TO
 	canvas.setAttribute("width", this.width);
 	canvas.setAttribute("height", this.height);
 	canvas.setAttribute("style", "z-index: " + zindex + "; position: absolute;");
-	//canvas.setAttribute("style", "position: absolute;");
 	
 	var newLayer = new ScmLayer(this, name, zindex);
 	this.layers.push();
@@ -87,6 +86,60 @@ ScmLayer.prototype.setAlpha = function(value) {
 
 ScmLayer.prototype.update = function(ctx) {
 	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
+}
+
+ScmLayer.prototype.drawShape = function(shape) {
+	
+	var ctx = this.getContext("2d");
+	
+	ctx.fillStyle = shape.color;
+	if (shape.scmFormType == "ScmPixel")
+  		ctx.fillRect(shape.x, shape.y, 1, 1);
+	else if (shape.scmFormType == "ScmRect")
+  		ctx.fillRect(shape.x, shape.y, shape.width, shape.height);	
+}
+
+ScmLayer.prototype.clear = function() { // TODO : avec arguments
+	
+	var ctx = this.getContext("2d");
+	ctx.clearRect(0, 0, this.lib.width, this.lib.height);
+}
+
+/* ScmPixel */
+
+function ScmPixel(x, y, color) { // TODO alpha
+	this.x = x;
+	this.y = y;
+	this.color = color;
+	this.scmFormType = "ScmPixel";
+}
+
+/* ScmRect */
+
+function ScmRect(x, y, width, height, color) {
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.color = color;
+	this.scmFormType = "ScmRect";
+}
+
+ScmRect.prototype.setSize = function(width, height) {
+	this.width = width;
+	this.height = height;
+}
+
+ScmRect.prototype.setWidth = function(width) {
+	this.width = width;
+}
+
+ScmRect.prototype.setHeight = function(height) {
+	this.height = height;
+}
+
+ScmRect.prototype.setColor = function(color) {
+	this.color = color;
 }
 
 // TODO : drawImg, drawShape, clear, resize, intern update
