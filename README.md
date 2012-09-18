@@ -26,12 +26,12 @@ ScmLayer Object
 ---------------
 
 * <B>ScmLayer()</B>:
-    * Can't be directly construct. Use SimpleCanvasManager.addLayer();<br /><br />
+    * Can't be directly construct. Use SimpleCanvasManager.addLayer(); (see above)<br /><br />
     
 
 * <B>setBackgroundColor(color)</B>:
     * Set the layer's Background color.
-    * [color] : a CSS color value that indicates the fill color of the drawing.<br /><br />
+    * [color] : a CSS color value (ex: #FF00FF).<br /><br />
 
 
 * <B>setBackgroundImg(img)</B>:
@@ -61,19 +61,19 @@ ScmShape Objects
 Simple Canvas Manager provides natively simple 2D shapes, such as lines, pixel, rectangles and circles.
 
 * <B>ScmRect(x, y, width, height, color)</B>:
-    * Create a rectangle. This is a constructor.
-    * [x] : Horizontal Position
-    * [y] : Vertical Position
-    * [width] : Width in pixel
-    * [height] : Height in pixel
-    * [color] : a CSS color<br /><br />
+    * Constructor for create a rectangle.
+    * [x] : Horizontal Position.
+    * [y] : Vertical Position.
+    * [width] : Width in pixel.
+    * [height] : Height in pixel.
+    * [color] : a CSS color (ex: #FF00FF).<br /><br />
     
       
 * <B>ScmPixel(x, y, color)</B>:
-    * Create a simple pixel. This is a constructor.
-    * [x] : Horizontal Position
-    * [y] : Vertical Position
-    * [color] : a CSS color<br /><br />
+    * Constructor for create a pixel.
+    * [x] : Horizontal Position.
+    * [y] : Vertical Position.
+    * [color] : a CSS color (ex: #FF00FF).<br /><br />
     
     
     
