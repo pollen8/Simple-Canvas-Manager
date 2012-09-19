@@ -43,9 +43,9 @@ ScmLayer Object
     * Clear the layer to transparent (each pixel's RGBA value is equal to zero).<br /><br />
     
     
-* <B>drawShape(scmShape)</B>:
-    * Draw simple 2D shapes.
-    * [scmShape] : an ScmShape Object. See all ScmShape Objects below.<br /><br />
+* <B>draw(object)</B>:
+    * Draw an SCM Object (shapes, images ...)
+    * [object] : an ScmShape Object. See all ScmShape Objects below.<br /><br />
     
         
 * <B>getHtmlElement()</B>:

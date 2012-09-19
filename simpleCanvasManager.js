@@ -54,9 +54,13 @@ function ScmLayer(lib, name, zindex) {
 	this.htmlName = "scm" + name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+// ScmLayer.getHtmlElement() : very usefull for compatibility
+
 ScmLayer.prototype.getHtmlElement = function() {
 	return document.getElementById(this.htmlName);
 }
+
+// ScmLayer.getContext() : very usefull for compatibility
 
 ScmLayer.prototype.getContext = function(type) {
 	return this.getHtmlElement().getContext(type);
@@ -77,6 +81,8 @@ ScmLayer.prototype.setBackgroundImg = function(src) {
 	ctx.drawImage(img, 0, 0);
 }
 
+// Not documented yet
+
 ScmLayer.prototype.setAlpha = function(value) {
 	var ctx = this.getContext("2d");
 	
@@ -84,19 +90,20 @@ ScmLayer.prototype.setAlpha = function(value) {
 	this.update(ctx);
 }
 
+// ScmLayer.update() : Deprecated
+
 ScmLayer.prototype.update = function(ctx) {
 	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
 }
 
-ScmLayer.prototype.drawShape = function(shape) {
+// ScmLayer.draw() : Draw an SCM Object
+
+ScmLayer.prototype.draw = function(object) {
 	
 	var ctx = this.getContext("2d");
 	
-	ctx.fillStyle = shape.color;
-	if (shape.scmFormType == "ScmPixel")
-  		ctx.fillRect(shape.x, shape.y, 1, 1);
-	else if (shape.scmFormType == "ScmRect")
-  		ctx.fillRect(shape.x, shape.y, shape.width, shape.height);	
+	ctx.fillStyle = object.color;
+	object.draw(ctx); // call the object's draw method
 }
 
 ScmLayer.prototype.clear = function() { // TODO : avec arguments
@@ -105,13 +112,20 @@ ScmLayer.prototype.clear = function() { // TODO : avec arguments
 	ctx.clearRect(0, 0, this.lib.width, this.lib.height);
 }
 
+/*
+ * SCM OBJECT : ScmPixel ScmRect ScmCircle
+ */
+
 /* ScmPixel */
 
 function ScmPixel(x, y, color) { // TODO alpha
 	this.x = x;
 	this.y = y;
 	this.color = color;
-	this.scmFormType = "ScmPixel";
+}
+
+ScmPixel.prototype.draw = function(ctx) {
+	ctx.fillRect(this.x, this.y, 1, 1);
 }
 
 /* ScmRect */
@@ -122,7 +136,11 @@ function ScmRect(x, y, width, height, color) {
 	this.width = width;
 	this.height = height;
 	this.color = color;
-	this.scmFormType = "ScmRect";
+}
+
+ScmRect.prototype.setPos = function(x, y) {
+	this.x = x;
+	this.y = y;
 }
 
 ScmRect.prototype.setSize = function(width, height) {
@@ -142,4 +160,37 @@ ScmRect.prototype.setColor = function(color) {
 	this.color = color;
 }
 
-// TODO : drawImg, drawShape, clear, resize, intern update
+ScmRect.prototype.draw = function(ctx) {
+	ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+
+/* ScmCircle */
+
+function ScmCircle(x, y, diameter, color) {
+	this.x = x;
+	this.y = y;
+	this.diameter = diameter;
+	this.color = color;
+}
+
+ScmCircle.prototype.setPos = function(x, y) {
+	this.x = x;
+	this.y = y;
+}
+
+ScmCircle.prototype.setDiameter = function(diameter) {
+	this.diameter = diameter;
+}
+
+ScmCircle.prototype.setColor = function(color) {
+	this.color = color;
+}
+
+ScmCircle.prototype.draw = function(ctx) {
+	ctx.beginPath();
+	ctx.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.fill();
+}
+
+// TODO : ScmArc ScmTriangle ScmCustom ScmLine 

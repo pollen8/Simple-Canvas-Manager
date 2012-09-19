@@ -11,9 +11,10 @@ window.onload = function() {
 	var one = scm.addLayer("one", 1),
 		pixel = new ScmPixel(0, 0, "#FF0000");
 	
-	one.drawShape(pixel);
+	one.draw(pixel);
 	
-	one.drawShape(new ScmPixel(25, 25, "#000000"));
-	one.drawShape(new ScmRect(50, 50, 200, 100, "#000000"));
+	one.draw(new ScmPixel(25, 25, "#000000"));
+	one.draw(new ScmRect(50, 50, 200, 100, "#000000"));
+	one.draw(new ScmCircle(200, 200, 20, "#FF0000"));
 	//one.clear();
 }
