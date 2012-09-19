@@ -16,5 +16,9 @@ window.onload = function() {
 	one.draw(new ScmPixel(25, 25, "#000000"));
 	one.draw(new ScmRect(50, 50, 200, 100, "#000000"));
 	one.draw(new ScmCircle(200, 200, 20, "#FF0000"));
+	
+	var text = new ScmText("Hello", 250, 250, "#008800");
+	one.setTextConfig("Arial", 140);
+	one.draw(text);
 	//one.clear();
 }

@@ -52,6 +52,10 @@ function ScmLayer(lib, name, zindex) {
 	this.zindex = zindex;
 	this.lib = lib;
 	this.htmlName = "scm" + name.charAt(0).toUpperCase() + name.slice(1);
+	
+	// Text Config
+	this.textFont = "sans-serif";
+	this.textSize = 10;
 }
 
 // ScmLayer.getHtmlElement() : very usefull for compatibility
@@ -112,8 +116,20 @@ ScmLayer.prototype.clear = function() { // TODO : avec arguments
 	ctx.clearRect(0, 0, this.lib.width, this.lib.height);
 }
 
+ScmLayer.prototype.getTextConfig = function() {
+	return {font: this.textFont, size: this.textSize};
+}
+
+ScmLayer.prototype.setTextConfig = function(font, size) {
+	this.textFont = font;
+	this.textSize = size;
+	
+	// Set Canvas font
+	this.getContext("2d").font = size + "px " + font;
+}
+
 /*
- * SCM OBJECT : ScmPixel ScmRect ScmCircle
+ * SCM OBJECT : ScmPixel ScmRect ScmCircle ScmText
  */
 
 /* ScmPixel */
@@ -192,5 +208,18 @@ ScmCircle.prototype.draw = function(ctx) {
 	ctx.closePath();
 	ctx.fill();
 }
+
+function ScmText(str, x, y, color) {
+
+	this.str = str;
+	this.x = x;
+	this.y = y;
+	this.color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
+}
+
+ScmText.prototype.draw = function(ctx) {
+	ctx.fillText(this.str, this.x, this.y);
+}
+
 
 // TODO : ScmArc ScmTriangle ScmCustom ScmLine 
