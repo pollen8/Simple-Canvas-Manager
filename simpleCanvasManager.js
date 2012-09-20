@@ -87,7 +87,7 @@ ScmLayer.prototype.setBackgroundImg = function(src) {
 
 // Not documented yet
 
-ScmLayer.prototype.setAlpha = function(value) {
+ScmLayer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
 	var ctx = this.getContext("2d");
 	
 	ctx.globalAlpha = value;
@@ -106,8 +106,18 @@ ScmLayer.prototype.draw = function(object) {
 	
 	var ctx = this.getContext("2d");
 	
-	ctx.fillStyle = object.color;
+	if (object.alpha)
+	{
+		ctx.save();
+		ctx.globalAlpha =object.alpha;
+	}
+	
+	if (object.color) 
+		ctx.fillStyle = object.color;
 	object.draw(ctx); // call the object's draw method
+	
+	if (object.alpha)
+		ctx.restore();
 }
 
 ScmLayer.prototype.clear = function() { // TODO : avec arguments
@@ -138,6 +148,11 @@ function ScmPixel(x, y, color) { // TODO alpha
 	this.x = x;
 	this.y = y;
 	this.color = color;
+	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
+}
+
+ScmPixel.prototype.setAlpha = function(value) {
+	this.alpha = value;
 }
 
 ScmPixel.prototype.draw = function(ctx) {
@@ -152,6 +167,7 @@ function ScmRect(x, y, width, height, color) {
 	this.width = width;
 	this.height = height;
 	this.color = color;
+	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
 ScmRect.prototype.setPos = function(x, y) {
@@ -176,6 +192,10 @@ ScmRect.prototype.setColor = function(color) {
 	this.color = color;
 }
 
+ScmRect.prototype.setAlpha = function(value) {
+	this.alpha = value;
+}
+
 ScmRect.prototype.draw = function(ctx) {
 	ctx.fillRect(this.x, this.y, this.width, this.height);
 }
@@ -187,6 +207,7 @@ function ScmCircle(x, y, diameter, color) {
 	this.y = y;
 	this.diameter = diameter;
 	this.color = color;
+	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
 ScmCircle.prototype.setPos = function(x, y) {
@@ -202,6 +223,10 @@ ScmCircle.prototype.setColor = function(color) {
 	this.color = color;
 }
 
+ScmCircle.prototype.setAlpha = function(value) {
+	this.alpha = value;
+}
+
 ScmCircle.prototype.draw = function(ctx) {
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, true);
@@ -209,17 +234,62 @@ ScmCircle.prototype.draw = function(ctx) {
 	ctx.fill();
 }
 
-function ScmText(str, x, y, color) {
+// ScmText
+
+function ScmText(str, x, y, color, alpha) {
 
 	this.str = str;
 	this.x = x;
 	this.y = y;
 	this.color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
+	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
+}
+
+ScmText.prototype.setAlpha = function(value) {
+	this.alpha = value;
 }
 
 ScmText.prototype.draw = function(ctx) {
 	ctx.fillText(this.str, this.x, this.y);
 }
 
+// ScmImage
 
-// TODO : ScmArc ScmTriangle ScmCustom ScmLine 
+function ScmImage(src, x, y, alpha) {
+	
+	this.src = src;
+	this.x = x;
+	this.y = y;
+	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
+}
+
+ScmImage.prototype.setSrc = function(src) {
+	this.src = img;
+}
+
+ScmImage.prototype.setPos = function(x, y){	
+	this.x = x;
+	this.y = y;
+}
+
+ScmImage.prototype.setX = function(y){	
+	this.x = x;
+}
+
+ScmImage.prototype.setY = function(y){	
+	this.y = y;
+}
+
+ScmImage.prototype.setAlpha = function(value) {
+	this.alpha = value;
+}
+
+ScmImage.prototype.draw = function(ctx) {
+	
+	var img = new Image();
+	
+	img.src = this.src;
+	ctx.drawImage(img, this.x, this.y);
+}
+
+// TODO : ScmArc ScmTriangle ScmCustom ScmLine fade in fade out
