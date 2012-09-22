@@ -1,4 +1,10 @@
 /**
+Provides some drawable objects.
+
+@module Drawable Objects
+**/
+
+/**
 * Create a drawable pixel
 *
 * @class ScmPixel
@@ -35,6 +41,14 @@ function ScmRect(x, y, width, height, color) {
 	this.color = color;
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
+
+/**
+* Set the Rectangle position
+*
+* @method setPos
+* @param {Integer} x New horizontal position
+* @param {Integer} y New vertical position
+*/
 
 ScmRect.prototype.setPos = function(x, y) {
 	this.x = x;
@@ -81,6 +95,14 @@ function ScmCircle(x, y, diameter, color) {
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
+/**
+* Set the Circle position
+*
+* @method setPos
+* @param {Integer} x New horizontal position
+* @param {Integer} y New vertical position
+*/
+
 ScmCircle.prototype.setPos = function(x, y) {
 	this.x = x;
 	this.y = y;
@@ -119,6 +141,19 @@ function ScmText(str, x, y, color, alpha) {
 	this.y = y;
 	this.color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
+}
+
+/**
+* Set the Text position
+*
+* @method setPos
+* @param {Integer} x New horizontal position
+* @param {Integer} y New vertical position
+*/
+
+ScmText.prototype.setPos = function(x, y) {
+	this.x = x;
+	this.y = y;
 }
 
 ScmText.prototype.setAlpha = function(value) {

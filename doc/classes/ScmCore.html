@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>ScmImage - The Foo API</title>
+    <title>ScmCore - The Foo API</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -98,7 +98,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>ScmImage Class</h1>
+                        <h1>ScmCore Class</h1>
 <div class="box meta">
     
 
@@ -106,13 +106,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;scmlib_drawable.js.html#l167"><code>scmlib\drawable.js:167</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;scmlib_core.js.html#l7"><code>scmlib\core.js:7</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/Drawable Objects.html">Drawable Objects</a>
+            Module: <a href="../modules/Major Objects.html">Major Objects</a>
         
     
 
@@ -122,17 +122,33 @@
 
 
 <div class="box intro">
-    <p>Create a drawable image object</p>
+    <p>Create an instance of the SCM lib.</p>
 </div>
 
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_ScmImage" class="method item">
-    <h3 class="name"><code>ScmImage</code></h3>
+        <div id="method_ScmCore" class="method item">
+    <h3 class="name"><code>ScmCore</code></h3>
 
     
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>node</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
     
 
     
@@ -160,7 +176,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;scmlib_drawable.js.html#l167"><code>scmlib\drawable.js:167</code></a>
+        <a href="..&#x2F;files&#x2F;scmlib_core.js.html#l7"><code>scmlib\core.js:7</code></a>
         
         </p>
 
@@ -174,6 +190,45 @@
         
     </div>
 
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">node</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>This is the html div where SCM will work.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[]</code>
+                        <span class="type">Auto: false, interval: 50</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p><b>autoUpdate</b> : Run (or not) SCM with auto update.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
     
@@ -206,15 +261,24 @@
 
                     <ul class="index-list methods">
                         
+                            <li class="index-item method deprecated">
+                                <a href="#method_addLayer">addLayer</a>
+
+                                
+                                
+                                    <span class="flag deprecated">deprecated</span>
+                                
+                            </li>
+                        
                             <li class="index-item method">
-                                <a href="#method_setPos">setPos</a>
+                                <a href="#method_getLayer">getLayer</a>
 
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_setSrc">setSrc</a>
+                                <a href="#method_update">update</a>
 
                                 
                                 
@@ -236,8 +300,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_setPos" class="method item">
-    <h3 class="name"><code>setPos</code></h3>
+                    <div id="method_addLayer" class="method item deprecated">
+    <h3 class="name"><code>addLayer</code></h3>
 
     
         <div class="args">
@@ -245,13 +309,13 @@
             
                 <li class="arg">
                     
-                        <code>x</code>
+                        <code>name</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>y</code>
+                        <code>zindex</code>
                     
                 </li>
             
@@ -261,6 +325,8 @@
 
     
 
+    
+        <span class="flag deprecated" title="soon">deprecated</span>
     
 
     
@@ -284,18 +350,20 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;scmlib_drawable.js.html#l193"><code>scmlib\drawable.js:193</code></a>
+        <a href="..&#x2F;files&#x2F;scmlib_core.js.html#l42"><code>scmlib\core.js:42</code></a>
         
         </p>
 
 
+        
+            <p>Deprecated: soon</p>
         
 
         
     </div>
 
     <div class="description">
-        <p>Set the Image position</p>
+        <p>Add a layer.</p>
     </div>
 
     
@@ -306,14 +374,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">x</code>
-                        <span class="type">Integer</span>
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>New horizontal position</p>
+                         
                     </div>
 
                     
@@ -321,14 +389,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">y</code>
+                        <code class="param-name">zindex</code>
                         <span class="type">Integer</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>New vertical position</p>
+                         
                     </div>
 
                     
@@ -344,8 +412,8 @@
 </div>
 
                 
-                    <div id="method_setSrc" class="method item">
-    <h3 class="name"><code>setSrc</code></h3>
+                    <div id="method_getLayer" class="method item">
+    <h3 class="name"><code>getLayer</code></h3>
 
     
         <div class="args">
@@ -353,12 +421,106 @@
             
                 <li class="arg">
                     
-                        <code>src</code>
+                        <code>name</code>
                     
                 </li>
             
             </ul><span class="paren">)</span>
         </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;scmlib_core.js.html#l66"><code>scmlib\core.js:66</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get a layer previously created.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Name of the Layer.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    Return a ScmLayer Object.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_update" class="method item">
+    <h3 class="name"><code>update</code></h3>
+
+    
+        <span class="paren">()</span>
     
 
     
@@ -386,7 +548,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;scmlib_drawable.js.html#l182"><code>scmlib\drawable.js:182</code></a>
+        <a href="..&#x2F;files&#x2F;scmlib_core.js.html#l83"><code>scmlib\core.js:83</code></a>
         
         </p>
 
@@ -397,32 +559,11 @@
     </div>
 
     <div class="description">
-        <p>Set the Image url</p>
+        <p>Update all the layers.<br />
+This method is called periodically if the ScmCore has been configured for (see above : updateMode).<br />
+This method is callable normally too.</p>
     </div>
 
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">src</code>
-                        <span class="type">String</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Relative or absolute url</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
     
 
     

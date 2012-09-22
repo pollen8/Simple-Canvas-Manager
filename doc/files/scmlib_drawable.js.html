@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>simpleCanvasManager.js - The Foo API</title>
+    <title>scmlib\drawable.js - The Foo API</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -43,6 +43,8 @@
             
                 <li><a href="..&#x2F;classes/ScmCircle.html">ScmCircle</a></li>
             
+                <li><a href="..&#x2F;classes/ScmCore.html">ScmCore</a></li>
+            
                 <li><a href="..&#x2F;classes/ScmImage.html">ScmImage</a></li>
             
                 <li><a href="..&#x2F;classes/ScmLayer.html">ScmLayer</a></li>
@@ -56,6 +58,10 @@
             </ul>
 
             <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Drawable Objects.html">Drawable Objects</a></li>
+            
+                <li><a href="..&#x2F;modules/Major Objects.html">Major Objects</a></li>
             
             </ul>
         </div>
@@ -92,175 +98,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: simpleCanvasManager.js</h1>
+                        <h1 class="file-heading">File: scmlib\drawable.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-
-function ScmCore(node, updateMode){
-	
-	if ((this.node = document.getElementById(node)))
-	{
-		var scmContent = document.createElement(&#x27;div&#x27;);
-		
-		scmContent.setAttribute(&quot;id&quot;, &quot;scmContent&quot;);
-		scmContent.setAttribute(&quot;width&quot;, this.node.clientWidth);
-		scmContent.setAttribute(&quot;height&quot;, this.node.clientHeight);
-		scmContent.setAttribute(&quot;style&quot;, &quot;position: absolute;&quot;);
-		this.node.appendChild(scmContent);
-		
-		this.width = this.node.clientWidth;
-		this.height = this.node.clientHeight;
-		this.content = document.getElementById(&quot;scmContent&quot;);
-		this.layers = [];
-		this.updateMode = getValidObject(updateMode, {auto: false, interval: 50});
-		
-		&#x2F;&#x2F; run updateLoop
-		if (this.updateMode.auto)
-			window.setInterval(this.update, this.updateMode.interval);
-	}	
-	else
-		console.error(&quot;Simple Canvas Manager : #&quot; + node + &quot; doesn&#x27;t exist !&quot;);
-}
-
-ScmCore.prototype.addLayer = function(name, zindex, options) { &#x2F;&#x2F; TODO : verifier qu&#x27;il n&#x27;existe pas
-	
-	var canvas = document.createElement(&#x27;canvas&#x27;);
-	canvas.setAttribute(&quot;id&quot;, &quot;scm&quot; + name.charAt(0).toUpperCase() + name.slice(1));
-	canvas.setAttribute(&quot;width&quot;, this.width);
-	canvas.setAttribute(&quot;height&quot;, this.height);
-	canvas.setAttribute(&quot;style&quot;, &quot;z-index: &quot; + zindex + &quot;; position: absolute;&quot;);
-	
-	var newLayer = new ScmLayer(this, name, zindex);
-	this.layers.push();
-	this.content.appendChild(canvas);
-	
-	return newLayer;
-}
-
-ScmCore.prototype.getLayer = function(name) {
-	
-	for (var i = 0; i != this.layers.length; i++)
-		if (this.layers[i].name == name)
-			return this.layers[i];
-				
-	console.error(&quot;Simple Canvas Manager : undefined reference to &quot; + name + &quot; layer !&quot;);	
-}
-
-ScmCore.prototype.update = function() {
-	console.log(&quot;Update !&quot;);
-	
-	&#x2F;&#x2F; Some stuff !!!!
-}
-
-&#x2F;* ScmLayer TODO setAutoUpdate *&#x2F;
-
 &#x2F;**
-* Create a layer.&lt;br &#x2F;&gt;
-* ScmLayer are unlimited and can be stacked on top &#x2F; bottom of another.
-*
-* @class ScmLayer
-* @constructor
-*&#x2F;
+Provides some drawable objects.
 
-function ScmLayer(lib, name, zindex) {
-	
-	this.name = name;
-	this.zindex = zindex;
-	this.lib = lib;
-	this.htmlName = &quot;scm&quot; + name.charAt(0).toUpperCase() + name.slice(1);
-	
-	&#x2F;&#x2F; Text Config
-	this.textFont = &quot;sans-serif&quot;;
-	this.textSize = 10;
-}
-
-&#x2F;**
-* Return the html element of the layer. &lt;br &#x2F;&gt;
-* Can be very usefull for ensure compatibility with other canvas
-* 
-* @method getHtmlElement
-* @return {Object} An Html object
-*&#x2F;
-
-ScmLayer.prototype.getHtmlElement = function() {
-	return document.getElementById(this.htmlName);
-}
-
-&#x2F;**
-* Return the canvas context of the layer.&lt;br &#x2F;&gt;
-* Can be very usefull for ensure compatibility with other canvas
-* 
-* @method getContext
-* @param {String} type Context type (often : &quot;2d&quot;)
-* @return {Object} Provides methods and properties for natively drawing on the canvas.
-*&#x2F;
-
-ScmLayer.prototype.getContext = function(type) {
-	return this.getHtmlElement().getContext(type);
-}
-
-ScmLayer.prototype.setBackgroundColor = function(color) { &#x2F;&#x2F; autoUpdate = false;
-	var ctx = this.getContext(&quot;2d&quot;);
-	
-	ctx.fillStyle = color;
-	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
-}
-
-ScmLayer.prototype.setBackgroundImg = function(src) {	&#x2F;&#x2F; autoUpdate = false;
-	var ctx = this.getContext(&quot;2d&quot;),
-		img = new Image();
-		
- 	img.src = src;
-	ctx.drawImage(img, 0, 0);
-}
-
-&#x2F;&#x2F; Not documented yet
-
-ScmLayer.prototype.setAlpha = function(value) { &#x2F;&#x2F; TODO : comportement inattendu
-	var ctx = this.getContext(&quot;2d&quot;);
-	
-	ctx.globalAlpha = value;
-	this.update(ctx);
-}
-
-&#x2F;&#x2F; ScmLayer.draw() : Draw an SCM Object
-
-ScmLayer.prototype.draw = function(object) {
-	
-	var ctx = this.getContext(&quot;2d&quot;);
-	
-	if (object.alpha)
-	{
-		ctx.save();
-		ctx.globalAlpha = object.alpha;
-	}
-	
-	if (object.color) 
-		ctx.fillStyle = object.color;
-	object.draw(ctx); &#x2F;&#x2F; call the object&#x27;s draw method
-	
-	if (object.alpha)
-		ctx.restore();
-}
-
-ScmLayer.prototype.clear = function() { &#x2F;&#x2F; TODO : avec arguments
-	
-	var ctx = this.getContext(&quot;2d&quot;);
-	ctx.clearRect(0, 0, this.lib.width, this.lib.height);
-}
-
-ScmLayer.prototype.getTextConfig = function() {
-	return {font: this.textFont, size: this.textSize};
-}
-
-ScmLayer.prototype.setTextConfig = function(font, size) {
-	this.textFont = font;
-	this.textSize = size;
-	
-	&#x2F;&#x2F; Set Canvas font
-	this.getContext(&quot;2d&quot;).font = size + &quot;px &quot; + font;
-}
+@module Drawable Objects
+**&#x2F;
 
 &#x2F;**
 * Create a drawable pixel
@@ -299,6 +145,14 @@ function ScmRect(x, y, width, height, color) {
 	this.color = color;
 	this.alpha = ((typeof(alpha) != &quot;undefined&quot;) ? (alpha) : (1));
 }
+
+&#x2F;**
+* Set the Rectangle position
+*
+* @method setPos
+* @param {Integer} x New horizontal position
+* @param {Integer} y New vertical position
+*&#x2F;
 
 ScmRect.prototype.setPos = function(x, y) {
 	this.x = x;
@@ -345,6 +199,14 @@ function ScmCircle(x, y, diameter, color) {
 	this.alpha = ((typeof(alpha) != &quot;undefined&quot;) ? (alpha) : (1));
 }
 
+&#x2F;**
+* Set the Circle position
+*
+* @method setPos
+* @param {Integer} x New horizontal position
+* @param {Integer} y New vertical position
+*&#x2F;
+
 ScmCircle.prototype.setPos = function(x, y) {
 	this.x = x;
 	this.y = y;
@@ -383,6 +245,19 @@ function ScmText(str, x, y, color, alpha) {
 	this.y = y;
 	this.color = ((typeof(color) != &quot;undefined&quot;) ? (color) : (&quot;#000000&quot;));
 	this.alpha = ((typeof(alpha) != &quot;undefined&quot;) ? (alpha) : (1));
+}
+
+&#x2F;**
+* Set the Text position
+*
+* @method setPos
+* @param {Integer} x New horizontal position
+* @param {Integer} y New vertical position
+*&#x2F;
+
+ScmText.prototype.setPos = function(x, y) {
+	this.x = x;
+	this.y = y;
 }
 
 ScmText.prototype.setAlpha = function(value) {
@@ -451,29 +326,6 @@ ScmImage.prototype.draw = function(ctx) {
 	img.src = this.src;
 	ctx.drawImage(img, this.x, this.y);
 }
-
-&#x2F;*
- * SCM UTILS
- *&#x2F;
-
-&#x2F;&#x2F; Transform a missing object key to his default key
-&#x2F;&#x2F; If the object not exist, the function return the default object
-&#x2F;&#x2F; TODO : check key type (bool, string, integer ...)
-
-function getValidObject(object, def){
-	
-	var ret = def;
-	
-	if (typeof(object) != &quot;undefined&quot;)
-		for (key in def)
-			ret[key] = ((!object.hasOwnProperty(key)) ? (def[key]) : (object[key]));
-	
-	return ret;
-}
-
-
-
-&#x2F;&#x2F; TODO : ScmArc ScmTriangle ScmCustom ScmLine fade in fade out
     </pre>
 </div>
 

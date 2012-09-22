@@ -7,11 +7,24 @@
         "logo": "http://i.imgur.com/XXyOd.png"
     },
     "files": {
-        "simpleCanvasManager.js": {
-            "name": "simpleCanvasManager.js",
-            "modules": {},
+        "scmlib\\core.js": {
+            "name": "scmlib\\core.js",
+            "modules": {
+                "Major Objects": 1
+            },
             "classes": {
-                "ScmLayer": 1,
+                "ScmCore": 1,
+                "ScmLayer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scmlib\\drawable.js": {
+            "name": "scmlib\\drawable.js",
+            "modules": {
+                "Drawable Objects": 1
+            },
+            "classes": {
                 "ScmPixel": 1,
                 "ScmRect": 1,
                 "ScmCircle": 1,
@@ -22,8 +35,68 @@
             "namespaces": {}
         }
     },
-    "modules": {},
+    "modules": {
+        "Major Objects": {
+            "name": "Major Objects",
+            "submodules": {},
+            "classes": {
+                "ScmCore": 1,
+                "ScmLayer": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "scmlib\\core.js",
+            "line": 99,
+            "description": "Provides ScmCore and ScmLayer."
+        },
+        "Drawable Objects": {
+            "name": "Drawable Objects",
+            "submodules": {},
+            "classes": {
+                "ScmPixel": 1,
+                "ScmRect": 1,
+                "ScmCircle": 1,
+                "ScmText": 1,
+                "ScmImage": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "scmlib\\drawable.js",
+            "line": 167,
+            "description": "Provides some drawable objects."
+        }
+    },
     "classes": {
+        "ScmCore": {
+            "name": "ScmCore",
+            "shortname": "ScmCore",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Major Objects",
+            "namespace": "",
+            "file": "scmlib\\core.js",
+            "line": 7,
+            "description": "Create an instance of the SCM lib.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "node",
+                    "description": "This is the html div where SCM will work.",
+                    "type": "String"
+                },
+                {
+                    "name": "",
+                    "description": "<b>autoUpdate</b> : Run (or not) SCM with auto update.",
+                    "type": "Auto: false, interval: 50",
+                    "optional": true
+                }
+            ]
+        },
         "ScmLayer": {
             "name": "ScmLayer",
             "shortname": "ScmLayer",
@@ -32,10 +105,14 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "simpleCanvasManager.js",
-            "line": 60,
+            "module": "Major Objects",
+            "namespace": "",
+            "file": "scmlib\\core.js",
+            "line": 99,
             "description": "Create a layer.<br />\nScmLayer are unlimited and can be stacked on top / bottom of another.",
-            "is_constructor": 1
+            "is_constructor": 1,
+            "deprecated": true,
+            "deprecationMessage": "soon"
         },
         "ScmPixel": {
             "name": "ScmPixel",
@@ -45,8 +122,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "simpleCanvasManager.js",
-            "line": 167,
+            "module": "Drawable Objects",
+            "namespace": "",
+            "file": "scmlib\\drawable.js",
+            "line": 7,
             "description": "Create a drawable pixel",
             "is_constructor": 1
         },
@@ -58,8 +137,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "simpleCanvasManager.js",
-            "line": 189,
+            "module": "Drawable Objects",
+            "namespace": "",
+            "file": "scmlib\\drawable.js",
+            "line": 29,
             "description": "Create a drawable rectangle",
             "is_constructor": 1
         },
@@ -71,8 +152,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "simpleCanvasManager.js",
-            "line": 235,
+            "module": "Drawable Objects",
+            "namespace": "",
+            "file": "scmlib\\drawable.js",
+            "line": 83,
             "description": "Create a drawable circle",
             "is_constructor": 1
         },
@@ -84,8 +167,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "simpleCanvasManager.js",
-            "line": 274,
+            "module": "Drawable Objects",
+            "namespace": "",
+            "file": "scmlib\\drawable.js",
+            "line": 130,
             "description": "Create a drawable text object",
             "is_constructor": 1
         },
@@ -97,35 +182,90 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "simpleCanvasManager.js",
-            "line": 298,
+            "module": "Drawable Objects",
+            "namespace": "",
+            "file": "scmlib\\drawable.js",
+            "line": 167,
             "description": "Create a drawable image object",
             "is_constructor": 1
         }
     },
     "classitems": [
         {
-            "file": "simpleCanvasManager.js",
-            "line": 80,
-            "description": "Return the html element of the layer. <br />\nCan be very usefull for ensure compatibility with other canvas",
+            "file": "scmlib\\core.js",
+            "line": 42,
+            "description": "Add a layer.",
+            "itemtype": "method",
+            "name": "addLayer",
+            "deprecated": true,
+            "deprecationMessage": "soon",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "zindex",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "ScmCore",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 66,
+            "description": "Get a layer previously created.",
+            "itemtype": "method",
+            "name": "getLayer",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the Layer.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Return a ScmLayer Object.",
+                "type": "Object"
+            },
+            "class": "ScmCore",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 83,
+            "description": "Update all the layers.<br />\nThis method is called periodically if the ScmCore has been configured for (see above : updateMode).<br />\nThis method is callable normally too.",
+            "itemtype": "method",
+            "name": "update",
+            "class": "ScmCore",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 120,
+            "description": "Return the html element of the layer. <br />\nCan be very usefull for ensure compatibility with other canvas.",
             "itemtype": "method",
             "name": "getHtmlElement",
             "return": {
                 "description": "An Html object",
                 "type": "Object"
             },
-            "class": "ScmLayer"
+            "class": "ScmLayer",
+            "module": "Major Objects"
         },
         {
-            "file": "simpleCanvasManager.js",
-            "line": 92,
-            "description": "Return the canvas context of the layer.<br />\nCan be very usefull for ensure compatibility with other canvas",
+            "file": "scmlib\\core.js",
+            "line": 132,
+            "description": "Return the canvas context of the layer.<br />\nCan be very usefull for ensure compatibility with other canvas.",
             "itemtype": "method",
             "name": "getContext",
             "params": [
                 {
                     "name": "type",
-                    "description": "Context type (often : \"2d\")",
+                    "description": "Context type (often : \"2d\").",
                     "type": "String"
                 }
             ],
@@ -133,11 +273,149 @@
                 "description": "Provides methods and properties for natively drawing on the canvas.",
                 "type": "Object"
             },
-            "class": "ScmLayer"
+            "class": "ScmLayer",
+            "module": "Major Objects"
         },
         {
-            "file": "simpleCanvasManager.js",
-            "line": 313,
+            "file": "scmlib\\core.js",
+            "line": 145,
+            "description": "Set the layer's Background color.",
+            "itemtype": "method",
+            "name": "setBackgroundColor",
+            "params": [
+                {
+                    "name": "color",
+                    "description": "A CSS color value (ex: #FF00FF).",
+                    "type": "String"
+                }
+            ],
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 159,
+            "description": "Set the layer's Background image.",
+            "itemtype": "method",
+            "name": "setBackgroundImg",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "Relative or absolute url of an image.",
+                    "type": "String"
+                }
+            ],
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 174,
+            "description": "Set the layer's global Alpa.<br />\nWarning : this medthod provides unexpected behavior.",
+            "beta": 1,
+            "itemtype": "method",
+            "name": "setAlpha",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "Alpha value : between 0 and 1.",
+                    "type": "Integer"
+                }
+            ],
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 190,
+            "description": "Draw an SCM drawable object (Circle, Text, Img ...)",
+            "itemtype": "method",
+            "name": "draw",
+            "params": [
+                {
+                    "name": "drawable",
+                    "description": "Need a <a href=\"../modules/Drawable%20Objects.html\">drawable object</a>.",
+                    "type": "Object"
+                }
+            ],
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 216,
+            "description": "Clear the layer to transparent (each pixel's RGBA value is equal to zero).",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\drawable.js",
+            "line": 45,
+            "description": "Set the Rectangle position",
+            "itemtype": "method",
+            "name": "setPos",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "New horizontal position",
+                    "type": "Integer"
+                },
+                {
+                    "name": "y",
+                    "description": "New vertical position",
+                    "type": "Integer"
+                }
+            ],
+            "class": "ScmRect",
+            "module": "Drawable Objects"
+        },
+        {
+            "file": "scmlib\\drawable.js",
+            "line": 98,
+            "description": "Set the Circle position",
+            "itemtype": "method",
+            "name": "setPos",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "New horizontal position",
+                    "type": "Integer"
+                },
+                {
+                    "name": "y",
+                    "description": "New vertical position",
+                    "type": "Integer"
+                }
+            ],
+            "class": "ScmCircle",
+            "module": "Drawable Objects"
+        },
+        {
+            "file": "scmlib\\drawable.js",
+            "line": 146,
+            "description": "Set the Text position",
+            "itemtype": "method",
+            "name": "setPos",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "New horizontal position",
+                    "type": "Integer"
+                },
+                {
+                    "name": "y",
+                    "description": "New vertical position",
+                    "type": "Integer"
+                }
+            ],
+            "class": "ScmText",
+            "module": "Drawable Objects"
+        },
+        {
+            "file": "scmlib\\drawable.js",
+            "line": 182,
             "description": "Set the Image url",
             "itemtype": "method",
             "name": "setSrc",
@@ -148,11 +426,12 @@
                     "type": "String"
                 }
             ],
-            "class": "ScmImage"
+            "class": "ScmImage",
+            "module": "Drawable Objects"
         },
         {
-            "file": "simpleCanvasManager.js",
-            "line": 324,
+            "file": "scmlib\\drawable.js",
+            "line": 193,
             "description": "Set the Image position",
             "itemtype": "method",
             "name": "setPos",
@@ -168,7 +447,8 @@
                     "type": "Integer"
                 }
             ],
-            "class": "ScmImage"
+            "class": "ScmImage",
+            "module": "Drawable Objects"
         }
     ]
 }
