@@ -1,5 +1,5 @@
 
-function SimpleCanvasManager(node){
+function SimpleCanvasManager(node, updateMode){
 	
 	if ((this.node = document.getElementById(node)))
 	{
@@ -15,6 +15,11 @@ function SimpleCanvasManager(node){
 		this.height = this.node.clientHeight;
 		this.content = document.getElementById("scmContent");
 		this.layers = [];
+		this.updateMode = getValidObject(updateMode, {auto: false, interval: 50});
+		
+		// run updateLoop
+		if (this.updateMode.auto)
+			window.setInterval(this.update, this.updateMode.interval);
 	}	
 	else
 		console.error("Simple Canvas Manager : #" + node + " doesn't exist !");
@@ -44,7 +49,13 @@ SimpleCanvasManager.prototype.getLayer = function(name) {
 	console.error("Simple Canvas Manager : undefined reference to " + name + " layer !");	
 }
 
-/* ScmLayer */
+SimpleCanvasManager.prototype.update = function() {
+	console.log("Update !");
+	
+	// Some stuff !!!!
+}
+
+/* ScmLayer TODO setAutoUpdate */
 
 function ScmLayer(lib, name, zindex) {
 	
@@ -70,14 +81,14 @@ ScmLayer.prototype.getContext = function(type) {
 	return this.getHtmlElement().getContext(type);
 }
 
-ScmLayer.prototype.setBackgroundColor = function(color) {	
+ScmLayer.prototype.setBackgroundColor = function(color) { // autoUpdate = false;
 	var ctx = this.getContext("2d");
 	
 	ctx.fillStyle = color;
-	this.update(ctx);
+	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
 }
 
-ScmLayer.prototype.setBackgroundImg = function(src) {	
+ScmLayer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 	var ctx = this.getContext("2d"),
 		img = new Image();
 		
@@ -94,12 +105,6 @@ ScmLayer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
 	this.update(ctx);
 }
 
-// ScmLayer.update() : Deprecated
-
-ScmLayer.prototype.update = function(ctx) {
-	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
-}
-
 // ScmLayer.draw() : Draw an SCM Object
 
 ScmLayer.prototype.draw = function(object) {
@@ -109,7 +114,7 @@ ScmLayer.prototype.draw = function(object) {
 	if (object.alpha)
 	{
 		ctx.save();
-		ctx.globalAlpha =object.alpha;
+		ctx.globalAlpha = object.alpha;
 	}
 	
 	if (object.color) 
@@ -291,5 +296,26 @@ ScmImage.prototype.draw = function(ctx) {
 	img.src = this.src;
 	ctx.drawImage(img, this.x, this.y);
 }
+
+/*
+ * SCM UTILS
+ */
+
+// Transform a missing object key to his default key
+// If the object not exist, the function return the default object
+// TODO : check key type (bool, string, integer ...)
+
+function getValidObject(object, def){
+	
+	var ret = def;
+	
+	if (typeof(object) != "undefined")
+		for (key in def)
+			ret[key] = ((!object.hasOwnProperty(key)) ? (def[key]) : (object[key]));
+	
+	return ret;
+}
+
+
 
 // TODO : ScmArc ScmTriangle ScmCustom ScmLine fade in fade out
