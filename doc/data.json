@@ -1,0 +1,174 @@
+{
+    "project": {
+        "name": "The Foo API",
+        "description": "The Foo API: a library for doing X, Y, and Z",
+        "version": "1.2.1",
+        "url": "http://example.com/",
+        "logo": "http://i.imgur.com/XXyOd.png"
+    },
+    "files": {
+        "simpleCanvasManager.js": {
+            "name": "simpleCanvasManager.js",
+            "modules": {},
+            "classes": {
+                "ScmLayer": 1,
+                "ScmPixel": 1,
+                "ScmRect": 1,
+                "ScmCircle": 1,
+                "ScmText": 1,
+                "ScmImage": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "ScmLayer": {
+            "name": "ScmLayer",
+            "shortname": "ScmLayer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "simpleCanvasManager.js",
+            "line": 60,
+            "description": "Create a layer.<br />\nScmLayer are unlimited and can be stacked on top / bottom of another.",
+            "is_constructor": 1
+        },
+        "ScmPixel": {
+            "name": "ScmPixel",
+            "shortname": "ScmPixel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "simpleCanvasManager.js",
+            "line": 167,
+            "description": "Create a drawable pixel",
+            "is_constructor": 1
+        },
+        "ScmRect": {
+            "name": "ScmRect",
+            "shortname": "ScmRect",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "simpleCanvasManager.js",
+            "line": 189,
+            "description": "Create a drawable rectangle",
+            "is_constructor": 1
+        },
+        "ScmCircle": {
+            "name": "ScmCircle",
+            "shortname": "ScmCircle",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "simpleCanvasManager.js",
+            "line": 235,
+            "description": "Create a drawable circle",
+            "is_constructor": 1
+        },
+        "ScmText": {
+            "name": "ScmText",
+            "shortname": "ScmText",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "simpleCanvasManager.js",
+            "line": 274,
+            "description": "Create a drawable text object",
+            "is_constructor": 1
+        },
+        "ScmImage": {
+            "name": "ScmImage",
+            "shortname": "ScmImage",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "simpleCanvasManager.js",
+            "line": 298,
+            "description": "Create a drawable image object",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "simpleCanvasManager.js",
+            "line": 80,
+            "description": "Return the html element of the layer. <br />\nCan be very usefull for ensure compatibility with other canvas",
+            "itemtype": "method",
+            "name": "getHtmlElement",
+            "return": {
+                "description": "An Html object",
+                "type": "Object"
+            },
+            "class": "ScmLayer"
+        },
+        {
+            "file": "simpleCanvasManager.js",
+            "line": 92,
+            "description": "Return the canvas context of the layer.<br />\nCan be very usefull for ensure compatibility with other canvas",
+            "itemtype": "method",
+            "name": "getContext",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Context type (often : \"2d\")",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Provides methods and properties for natively drawing on the canvas.",
+                "type": "Object"
+            },
+            "class": "ScmLayer"
+        },
+        {
+            "file": "simpleCanvasManager.js",
+            "line": 313,
+            "description": "Set the Image url",
+            "itemtype": "method",
+            "name": "setSrc",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "Relative or absolute url",
+                    "type": "String"
+                }
+            ],
+            "class": "ScmImage"
+        },
+        {
+            "file": "simpleCanvasManager.js",
+            "line": 324,
+            "description": "Set the Image position",
+            "itemtype": "method",
+            "name": "setPos",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "New horizontal position",
+                    "type": "Integer"
+                },
+                {
+                    "name": "y",
+                    "description": "New vertical position",
+                    "type": "Integer"
+                }
+            ],
+            "class": "ScmImage"
+        }
+    ]
+}

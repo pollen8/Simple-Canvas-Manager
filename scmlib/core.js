@@ -1,4 +1,3 @@
-
 function ScmCore(node, updateMode){
 	
 	if ((this.node = document.getElementById(node)))
@@ -57,6 +56,14 @@ ScmCore.prototype.update = function() {
 
 /* ScmLayer TODO setAutoUpdate */
 
+/**
+* Create a layer.<br />
+* ScmLayer are unlimited and can be stacked on top / bottom of another.
+*
+* @class ScmLayer
+* @constructor
+*/
+
 function ScmLayer(lib, name, zindex) {
 	
 	this.name = name;
@@ -69,13 +76,26 @@ function ScmLayer(lib, name, zindex) {
 	this.textSize = 10;
 }
 
-// ScmLayer.getHtmlElement() : very usefull for compatibility
+/**
+* Return the html element of the layer. <br />
+* Can be very usefull for ensure compatibility with other canvas
+* 
+* @method getHtmlElement
+* @return {Object} An Html object
+*/
 
 ScmLayer.prototype.getHtmlElement = function() {
 	return document.getElementById(this.htmlName);
 }
 
-// ScmLayer.getContext() : very usefull for compatibility
+/**
+* Return the canvas context of the layer.<br />
+* Can be very usefull for ensure compatibility with other canvas
+* 
+* @method getContext
+* @param {String} type Context type (often : "2d")
+* @return {Object} Provides methods and properties for natively drawing on the canvas.
+*/
 
 ScmLayer.prototype.getContext = function(type) {
 	return this.getHtmlElement().getContext(type);
@@ -144,160 +164,6 @@ ScmLayer.prototype.setTextConfig = function(font, size) {
 }
 
 /*
- * SCM OBJECT : ScmPixel ScmRect ScmCircle ScmText
- */
-
-/* ScmPixel */
-
-function ScmPixel(x, y, color) { // TODO alpha
-	this.x = x;
-	this.y = y;
-	this.color = color;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
-}
-
-ScmPixel.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
-
-ScmPixel.prototype.draw = function(ctx) {
-	ctx.fillRect(this.x, this.y, 1, 1);
-}
-
-/* ScmRect */
-
-function ScmRect(x, y, width, height, color) {
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-	this.color = color;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
-}
-
-ScmRect.prototype.setPos = function(x, y) {
-	this.x = x;
-	this.y = y;
-}
-
-ScmRect.prototype.setSize = function(width, height) {
-	this.width = width;
-	this.height = height;
-}
-
-ScmRect.prototype.setWidth = function(width) {
-	this.width = width;
-}
-
-ScmRect.prototype.setHeight = function(height) {
-	this.height = height;
-}
-
-ScmRect.prototype.setColor = function(color) {
-	this.color = color;
-}
-
-ScmRect.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
-
-ScmRect.prototype.draw = function(ctx) {
-	ctx.fillRect(this.x, this.y, this.width, this.height);
-}
-
-/* ScmCircle */
-
-function ScmCircle(x, y, diameter, color) {
-	this.x = x;
-	this.y = y;
-	this.diameter = diameter;
-	this.color = color;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
-}
-
-ScmCircle.prototype.setPos = function(x, y) {
-	this.x = x;
-	this.y = y;
-}
-
-ScmCircle.prototype.setDiameter = function(diameter) {
-	this.diameter = diameter;
-}
-
-ScmCircle.prototype.setColor = function(color) {
-	this.color = color;
-}
-
-ScmCircle.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
-
-ScmCircle.prototype.draw = function(ctx) {
-	ctx.beginPath();
-	ctx.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.fill();
-}
-
-// ScmText
-
-function ScmText(str, x, y, color, alpha) {
-
-	this.str = str;
-	this.x = x;
-	this.y = y;
-	this.color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
-}
-
-ScmText.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
-
-ScmText.prototype.draw = function(ctx) {
-	ctx.fillText(this.str, this.x, this.y);
-}
-
-// ScmImage
-
-function ScmImage(src, x, y, alpha) {
-	
-	this.src = src;
-	this.x = x;
-	this.y = y;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
-}
-
-ScmImage.prototype.setSrc = function(src) {
-	this.src = img;
-}
-
-ScmImage.prototype.setPos = function(x, y){	
-	this.x = x;
-	this.y = y;
-}
-
-ScmImage.prototype.setX = function(y){	
-	this.x = x;
-}
-
-ScmImage.prototype.setY = function(y){	
-	this.y = y;
-}
-
-ScmImage.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
-
-ScmImage.prototype.draw = function(ctx) {
-	
-	var img = new Image();
-	
-	img.src = this.src;
-	ctx.drawImage(img, this.x, this.y);
-}
-
-/*
  * SCM UTILS
  */
 
@@ -315,7 +181,3 @@ function getValidObject(object, def){
 	
 	return ret;
 }
-
-
-
-// TODO : ScmArc ScmTriangle ScmCustom ScmLine fade in fade out
