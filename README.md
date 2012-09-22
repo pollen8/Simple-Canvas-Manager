@@ -2,10 +2,10 @@
 
 Description ... soon
 
-SimpleCanvasManager Object
---------------------------
+ScmCore Object : 
+----------------
 
-* <B>SimpleCanvasManager(node)</B>:
+* <B>ScmCore(node)</B>:
     * This is the SCM constructor.
     * [node] is the html div where SCM will work.<br /><br />
 

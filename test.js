@@ -5,7 +5,7 @@
 
 window.onload = function() {
 	
-	var scm = new SimpleCanvasManager("node", {auto: true, interval: 1500});
+	var scm = new ScmCore("node", {auto: true, interval: 1500});
 
 
 	var one = scm.addLayer("one", 1),

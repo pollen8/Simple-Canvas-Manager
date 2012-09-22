@@ -1,5 +1,5 @@
 
-function SimpleCanvasManager(node, updateMode){
+function ScmCore(node, updateMode){
 	
 	if ((this.node = document.getElementById(node)))
 	{
@@ -25,7 +25,7 @@ function SimpleCanvasManager(node, updateMode){
 		console.error("Simple Canvas Manager : #" + node + " doesn't exist !");
 }
 
-SimpleCanvasManager.prototype.addLayer = function(name, zindex, options) { // TODO : verifier qu'il n'existe pas
+ScmCore.prototype.addLayer = function(name, zindex, options) { // TODO : verifier qu'il n'existe pas
 	
 	var canvas = document.createElement('canvas');
 	canvas.setAttribute("id", "scm" + name.charAt(0).toUpperCase() + name.slice(1));
@@ -40,7 +40,7 @@ SimpleCanvasManager.prototype.addLayer = function(name, zindex, options) { // TO
 	return newLayer;
 }
 
-SimpleCanvasManager.prototype.getLayer = function(name) {
+ScmCore.prototype.getLayer = function(name) {
 	
 	for (var i = 0; i != this.layers.length; i++)
 		if (this.layers[i].name == name)
@@ -49,7 +49,7 @@ SimpleCanvasManager.prototype.getLayer = function(name) {
 	console.error("Simple Canvas Manager : undefined reference to " + name + " layer !");	
 }
 
-SimpleCanvasManager.prototype.update = function() {
+ScmCore.prototype.update = function() {
 	console.log("Update !");
 	
 	// Some stuff !!!!
