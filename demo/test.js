@@ -5,8 +5,8 @@
 
 window.onload = function() {
 	
-	var scm = new ScmCore("node", {auto: true, interval: 1500}),
-		one = new ScmLayer("one", 1),
+	var scm = new ScmCore("node", {auto: true, interval: 100}),
+		one = new ScmLayer("one", 1, true),
 		pixel = new ScmPixel(0, 0, "#FF0000");
 	
 	scm.push(one);

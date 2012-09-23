@@ -10,7 +10,7 @@ Provides ScmCore and ScmLayer.
 * @class ScmCore
 * @constructor
 * @param node {String} This is the html div where SCM will work.
-* @param [{auto: false, interval: 50}] <b>autoUpdate</b> : Run (or not) SCM with auto update.
+* @param [updateMode={auto: false, interval: 50}] <b>autoUpdate</b> : Run (or not) SCM with auto update.
 */
 
 function ScmCore(node, updateMode){
@@ -31,9 +31,23 @@ function ScmCore(node, updateMode){
 		this.layers = [];
 		this.updateMode = getValidObject(updateMode, {auto: false, interval: 50});
 		
+		// ensure that bind is available
+		if (!('bind' in Function.prototype)) {
+			Function.prototype.bind = function(owner) {
+			    var that = this;
+			    var args = Array.prototype.slice.call(arguments, 1);
+			    return function() {
+			        return that.apply(owner,
+			            args.length === 0 ? arguments : arguments.length === 0 ? args :
+			            args.concat(Array.prototype.slice.call(arguments, 0))
+			        );
+			    };
+			};
+		}
+
 		// run updateLoop
 		if (this.updateMode.auto)
-			window.setInterval(this.update, this.updateMode.interval);
+			window.setInterval(this.update.bind(this), this.updateMode.interval);
 	}	
 	else
 		console.error("Simple Canvas Manager : #" + node + " doesn't exist !");
@@ -84,12 +98,14 @@ ScmCore.prototype.getLayer = function(name) {
 */
 
 ScmCore.prototype.update = function() {
-	console.log("Update !");
-	
-	// Some stuff !!!!
-}
 
-/* ScmLayer TODO setAutoUpdate */
+	// Clear all layers
+	for (var i = 0; i != this.layers.length; i++)
+		if (typeof(this.layers[i]) != "undefined" && !this.layers[i].locked)
+			this.layers[i].clear();
+			
+	// Draw all objects
+}
 
 /**
 * Create a layer.<br />
@@ -97,13 +113,17 @@ ScmCore.prototype.update = function() {
 *
 * @class ScmLayer
 * @constructor
+* @param name {String} Name of the layer.
+* @param zindex {Integer} Just a simple CSS z-index (the larger it is, the highest layer is)
+* @param [locked=false] {Boolean} Is the layer is locked ? If true, the layer can't be automaticly updated by the ScmCore.
 */
 
-function ScmLayer(name, zindex) {
+function ScmLayer(name, zindex, locked) {
 	
 	this.name = name;
 	this.zindex = zindex;
 	this.htmlName = "scm" + name.charAt(0).toUpperCase() + name.slice(1);
+	this.locked = locked || false;
 	
 	// Text Config
 	this.textFont = "sans-serif";
@@ -219,7 +239,7 @@ ScmLayer.prototype.clear = function() { // TODO : avec arguments
 		width = ctx.canvas.clientWidth,
 		height = ctx.canvas.clientHeight;
 		
-	ctx.clearRect(0, 0, width, this.height);
+	ctx.clearRect(0, 0, width, height);
 }
 
 ScmLayer.prototype.getTextConfig = function() {
@@ -232,6 +252,28 @@ ScmLayer.prototype.setTextConfig = function(font, size) {
 	
 	// Set Canvas font
 	this.getContext("2d").font = size + "px " + font;
+}
+
+/**
+* Lock the layer.<br />
+* Now, the layer can't be automaticly updated by the ScmCore.
+*
+* @method lock
+*/
+
+ScmLayer.prototype.lock = function() {
+	this.locked = true;
+}
+
+/**
+* Unlock the layer.<br />
+* Now, the layer can be automaticly updated by the ScmCore.
+*
+* @method unlock
+*/
+
+ScmLayer.prototype.unlock = function() {
+	this.locked = false;
 }
 
 /*

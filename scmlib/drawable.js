@@ -241,8 +241,12 @@ ScmImage.prototype.setAlpha = function(value) {
 
 ScmImage.prototype.draw = function(ctx) {
 	
-	var img = new Image();
+	var img = new Image(),
+		x = this.x,
+		y = this.y;
 	
+	img.onload = function(){
+ 		ctx.drawImage(img, x, y);
+	};
 	img.src = this.src;
-	ctx.drawImage(img, this.x, this.y);
 }

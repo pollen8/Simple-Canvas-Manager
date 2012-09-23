@@ -47,7 +47,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "scmlib\\core.js",
-            "line": 94,
+            "line": 110,
             "description": "Provides ScmCore and ScmLayer."
         },
         "Drawable Objects": {
@@ -90,7 +90,7 @@
                     "type": "String"
                 },
                 {
-                    "name": "",
+                    "name": "updateMode",
                     "description": "<b>autoUpdate</b> : Run (or not) SCM with auto update.",
                     "type": "Auto: false, interval: 50",
                     "optional": true
@@ -108,9 +108,28 @@
             "module": "Major Objects",
             "namespace": "",
             "file": "scmlib\\core.js",
-            "line": 94,
+            "line": 110,
             "description": "Create a layer.<br />\nScmLayer are unlimited and can be stacked on top / bottom of another.",
-            "is_constructor": 1
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the layer.",
+                    "type": "String"
+                },
+                {
+                    "name": "zindex",
+                    "description": "Just a simple CSS z-index (the larger it is, the highest layer is)",
+                    "type": "Integer"
+                },
+                {
+                    "name": "locked",
+                    "description": "Is the layer is locked ? If true, the layer can't be automaticly updated by the ScmCore.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ]
         },
         "ScmPixel": {
             "name": "ScmPixel",
@@ -191,7 +210,7 @@
     "classitems": [
         {
             "file": "scmlib\\core.js",
-            "line": 42,
+            "line": 56,
             "description": "Push a layer in the ScmCore.",
             "itemtype": "method",
             "name": "push",
@@ -207,7 +226,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 61,
+            "line": 75,
             "description": "Get a layer previously created.",
             "itemtype": "method",
             "name": "getLayer",
@@ -227,7 +246,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 78,
+            "line": 92,
             "description": "Update all the layers.<br />\nThis method is called periodically if the ScmCore has been configured for (see above : updateMode).<br />\nThis method is callable normally too.",
             "itemtype": "method",
             "name": "update",
@@ -236,7 +255,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 113,
+            "line": 133,
             "description": "Return the html element of the layer. <br />\nCan be very usefull for ensure compatibility with other canvas.",
             "itemtype": "method",
             "name": "getHtmlElement",
@@ -249,7 +268,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 125,
+            "line": 145,
             "description": "Return the canvas context of the layer.<br />\nCan be very usefull for ensure compatibility with other canvas.",
             "itemtype": "method",
             "name": "getContext",
@@ -269,7 +288,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 138,
+            "line": 158,
             "description": "Set the layer's Background color.",
             "itemtype": "method",
             "name": "setBackgroundColor",
@@ -285,7 +304,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 154,
+            "line": 174,
             "description": "Set the layer's Background image.",
             "itemtype": "method",
             "name": "setBackgroundImg",
@@ -301,7 +320,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 169,
+            "line": 189,
             "description": "Set the layer's global Alpa.<br />\nWarning : this medthod provides unexpected behavior.",
             "beta": 1,
             "itemtype": "method",
@@ -318,7 +337,7 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 185,
+            "line": 205,
             "description": "Draw an SCM drawable object (Circle, Text, Img ...)",
             "itemtype": "method",
             "name": "draw",
@@ -334,10 +353,28 @@
         },
         {
             "file": "scmlib\\core.js",
-            "line": 210,
+            "line": 230,
             "description": "Clear the layer to transparent (each pixel's RGBA value is equal to zero).",
             "itemtype": "method",
             "name": "clear",
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 257,
+            "description": "Lock the layer.<br />\nNow, the layer can't be automaticly updated by the ScmCore.",
+            "itemtype": "method",
+            "name": "lock",
+            "class": "ScmLayer",
+            "module": "Major Objects"
+        },
+        {
+            "file": "scmlib\\core.js",
+            "line": 268,
+            "description": "Unlock the layer.<br />\nNow, the layer can be automaticly updated by the ScmCore.",
+            "itemtype": "method",
+            "name": "unlock",
             "class": "ScmLayer",
             "module": "Major Objects"
         },
