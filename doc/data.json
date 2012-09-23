@@ -1,9 +1,9 @@
 {
     "project": {
-        "name": "The Foo API",
-        "description": "The Foo API: a library for doing X, Y, and Z",
-        "version": "1.2.1",
-        "url": "http://example.com/",
+        "name": "Simple Canvas Manager Librairy",
+        "description": "Simple Canvas Manager (SCM) is a javascript library that offers you methods to work easy with the HTML5 canvas element.",
+        "version": "0.0.1",
+        "url": "https://github.com/MyBoon/Simple-Canvas-Manager",
         "logo": "http://i.imgur.com/XXyOd.png"
     },
     "files": {
