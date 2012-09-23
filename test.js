@@ -5,12 +5,11 @@
 
 window.onload = function() {
 	
-	var scm = new ScmCore("node", {auto: true, interval: 1500});
-
-
-	var one = scm.addLayer("one", 1),
+	var scm = new ScmCore("node", {auto: true, interval: 1500}),
+		one = new ScmLayer("one", 1),
 		pixel = new ScmPixel(0, 0, "#FF0000");
 	
+	scm.push(one);
 	one.draw(pixel);
 	
 	//one.setAlpha(0); 

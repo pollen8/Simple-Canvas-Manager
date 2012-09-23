@@ -144,27 +144,22 @@ function ScmCore(node, updateMode){
 }
 
 &#x2F;**
-* Add a layer.
+* Push a layer in the ScmCore.
 *
-* @method addLayer
-* @deprecated soon
-* @param name {String}
-* @param zindex {Integer}
+* @method push
+* @param obj {Object} An ScmLayer object
 *&#x2F;
 
-ScmCore.prototype.addLayer = function(name, zindex) { &#x2F;&#x2F; TODO : verifier qu&#x27;il n&#x27;existe pas
+ScmCore.prototype.push = function(obj) { &#x2F;&#x2F; TODO : verifier qu&#x27;il n&#x27;existe pas
 	
 	var canvas = document.createElement(&#x27;canvas&#x27;);
-	canvas.setAttribute(&quot;id&quot;, &quot;scm&quot; + name.charAt(0).toUpperCase() + name.slice(1));
+	
+	canvas.setAttribute(&quot;id&quot;, &quot;scm&quot; + obj.name.charAt(0).toUpperCase() + obj.name.slice(1));
 	canvas.setAttribute(&quot;width&quot;, this.width);
 	canvas.setAttribute(&quot;height&quot;, this.height);
-	canvas.setAttribute(&quot;style&quot;, &quot;z-index: &quot; + zindex + &quot;; position: absolute;&quot;);
-	
-	var newLayer = new ScmLayer(this, name, zindex);
-	this.layers.push();
+	canvas.setAttribute(&quot;style&quot;, &quot;z-index: &quot; + obj.zindex + &quot;; position: absolute;&quot;);
 	this.content.appendChild(canvas);
-	
-	return newLayer;
+	this.layers.push(obj);
 }
 
 &#x2F;**
@@ -172,7 +167,7 @@ ScmCore.prototype.addLayer = function(name, zindex) { &#x2F;&#x2F; TODO : verifi
 * 
 * @method getLayer
 * @param name {String} Name of the Layer.
-* @return {Object} Return a ScmLayer Object.
+* @return {Object} Return an ScmLayer Object.
 *&#x2F;
 
 ScmCore.prototype.getLayer = function(name) {
@@ -206,14 +201,12 @@ ScmCore.prototype.update = function() {
 *
 * @class ScmLayer
 * @constructor
-* @deprecated soon
 *&#x2F;
 
-function ScmLayer(lib, name, zindex) {
+function ScmLayer(name, zindex) {
 	
 	this.name = name;
 	this.zindex = zindex;
-	this.lib = lib;
 	this.htmlName = &quot;scm&quot; + name.charAt(0).toUpperCase() + name.slice(1);
 	
 	&#x2F;&#x2F; Text Config
@@ -254,10 +247,12 @@ ScmLayer.prototype.getContext = function(type) {
 *&#x2F;
 
 ScmLayer.prototype.setBackgroundColor = function(color) { &#x2F;&#x2F; autoUpdate = false;
-	var ctx = this.getContext(&quot;2d&quot;);
+	var ctx = this.getContext(&quot;2d&quot;),
+		width = ctx.canvas.clientWidth,
+		height = ctx.canvas.clientHeight;
 	
 	ctx.fillStyle = color;
-	ctx.fillRect(0, 0, this.lib.width, this.lib.height);
+	ctx.fillRect(0, 0, width, height);
 }
 
 &#x2F;**
@@ -298,7 +293,6 @@ ScmLayer.prototype.setAlpha = function(value) { &#x2F;&#x2F; TODO : comportement
 * @param drawable {Object} Need a &lt;a href=&quot;..&#x2F;modules&#x2F;Drawable%20Objects.html&quot;&gt;drawable object&lt;&#x2F;a&gt;.
 *&#x2F;
 
-
 ScmLayer.prototype.draw = function(object) {
 	
 	var ctx = this.getContext(&quot;2d&quot;);
@@ -325,8 +319,11 @@ ScmLayer.prototype.draw = function(object) {
 
 ScmLayer.prototype.clear = function() { &#x2F;&#x2F; TODO : avec arguments
 	
-	var ctx = this.getContext(&quot;2d&quot;);
-	ctx.clearRect(0, 0, this.lib.width, this.lib.height);
+	var ctx = this.getContext(&quot;2d&quot;),
+		width = ctx.canvas.clientWidth,
+		height = ctx.canvas.clientHeight;
+		
+	ctx.clearRect(0, 0, width, this.height);
 }
 
 ScmLayer.prototype.getTextConfig = function() {

@@ -136,10 +136,34 @@ ScmCircle.prototype.draw = function(ctx) {
 
 function ScmText(str, x, y, color, alpha) {
 
+	/**
+	* @property str
+	* @type String
+	*/
 	this.str = str;
+	
+	/**
+	* @property x
+	* @type Integer
+	*/
 	this.x = x;
+	
+	/**
+	* @property y
+	* @type Integer
+	*/
 	this.y = y;
+	
+	/**
+	* @property color
+	* @type String
+	*/
 	this.color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
+	
+	/**
+	* @property alpha
+	* @type Integer
+	*/
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
