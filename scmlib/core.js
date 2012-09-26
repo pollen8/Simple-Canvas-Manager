@@ -233,7 +233,7 @@ ScmLayer.prototype.draw = function(object) {
 * @method clear
 */
 
-ScmLayer.prototype.clear = function() { // TODO : avec arguments
+ScmLayer.prototype.clear = function() {
 	
 	var ctx = this.getContext("2d"),
 		width = ctx.canvas.clientWidth,
