@@ -10,10 +10,10 @@ Provides ScmCore and ScmLayer.
 * @class ScmCore
 * @constructor
 * @param node {String} This is the html div where SCM will work.
-* @param [updateMode={auto: false, interval: 50}] <b>autoUpdate</b> : Run (or not) SCM with auto update.
+* @param [updateInterval=10] {Integer} Update intervals (in milliseconds).
 */
 
-function ScmCore(node, updateMode){
+function ScmCore(node, updateInterval){
 	
 	if ((this.node = document.getElementById(node)))
 	{
@@ -29,7 +29,9 @@ function ScmCore(node, updateMode){
 		this.height = this.node.clientHeight;
 		this.content = document.getElementById("scmContent");
 		this.layers = [];
-		this.updateMode = getValidObject(updateMode, {auto: false, interval: 50});
+		this.updateInterval = updateInterval || 10;
+		this.events = new ScmEvent("__coreConstruct__");
+		//this.updateMode = getValidObject(updateMode, {auto: true, interval: 10});
 		
 		// ensure that bind is available
 		if (!('bind' in Function.prototype)) {
@@ -46,11 +48,10 @@ function ScmCore(node, updateMode){
 		}
 
 		// run updateLoop
-		if (this.updateMode.auto)
-			window.setInterval(this.update.bind(this), this.updateMode.interval);
+		window.setInterval(this.update.bind(this), updateInterval);
 	}	
 	else
-		console.error("Simple Canvas Manager : #" + node + " doesn't exist !");
+		console.error("SCM : #" + node + " doesn't exist !");
 }
 
 /**
@@ -91,7 +92,7 @@ ScmCore.prototype.getLayer = function(name) {
 
 /**
 * Update all the layers.<br />
-* This method is called periodically if the ScmCore has been configured for (see above : updateMode).<br />
+* This method is called periodically by the ScmCore.<br />
 * This method is callable normally too.
 * 
 * @method update
@@ -105,6 +106,9 @@ ScmCore.prototype.update = function() {
 			this.layers[i].clear();
 			
 	// Draw all objects
+	for (var i = 0; i != this.layers.length; i++)
+		for (var j = 0; j != this.layers[i].objects.length; j++)
+			this.layers[i].drawAll();
 }
 
 /**
@@ -124,6 +128,7 @@ function ScmLayer(name, zindex, locked) {
 	this.zindex = zindex;
 	this.htmlName = "scm" + name.charAt(0).toUpperCase() + name.slice(1);
 	this.locked = locked || false;
+	this.objects = [];
 	
 	// Text Config
 	this.textFont = "sans-serif";
@@ -156,7 +161,8 @@ ScmLayer.prototype.getContext = function(type) {
 }
 
 /**
-* Set the layer's Background color.
+* Set the layer's Background color.<br />
+* When setBackgroundColor is called, the layer is automaticly locked (see below)
 * 
 * @method setBackgroundColor
 * @param color {String} A CSS color value (ex: #FF00FF).
@@ -169,10 +175,12 @@ ScmLayer.prototype.setBackgroundColor = function(color) { // autoUpdate = false;
 	
 	ctx.fillStyle = color;
 	ctx.fillRect(0, 0, width, height);
+	this.locked = true;
 }
 
 /**
-* Set the layer's Background image.
+* Set the layer's Background image.<br />
+* When setBackgroundImg is called, the layer is automaticly locked (see below)
 * 
 * @method setBackgroundImg
 * @param src {String} Relative or absolute url of an image.
@@ -184,6 +192,7 @@ ScmLayer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 		
  	img.src = src;
 	ctx.drawImage(img, 0, 0);
+	this.locked = true;
 }
 
 /**
@@ -202,6 +211,15 @@ ScmLayer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
 	this.update(ctx);
 }
 
+ScmLayer.prototype.exist = function(object) {
+	
+	for (var i = 0; i != this.objects.length; i++)
+		if (this.objects[i] == object)
+			return true;
+			
+	return false;
+}
+
 /**
 * Draw an SCM drawable object (Circle, Text, Img ...)
 * 
@@ -210,6 +228,9 @@ ScmLayer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
 */
 
 ScmLayer.prototype.draw = function(object) {
+	
+	if (!this.exist(object))
+		this.objects.push(object);
 	
 	var ctx = this.getContext("2d");
 	
@@ -227,13 +248,37 @@ ScmLayer.prototype.draw = function(object) {
 		ctx.restore();
 }
 
+ScmLayer.prototype.drawAll = function() {
+
+	
+	var ctx = this.getContext("2d"),
+		object;
+	
+	for (var i = 0; i != this.objects.length; i++)
+	{
+		object = this.objects[i];
+		if (object.alpha)
+		{
+			ctx.save();
+			ctx.globalAlpha = object.alpha;
+		}
+		
+		if (object.color) 
+			ctx.fillStyle = object.color;
+		object.draw(ctx); // call the object's draw method
+		
+		if (object.alpha)
+			ctx.restore();
+	}
+}
+
 /**
 * Clear the layer to transparent (each pixel's RGBA value is equal to zero).
 * 
 * @method clear
 */
 
-ScmLayer.prototype.clear = function() {
+ScmLayer.prototype.clear = function() { // TODO : voir pour le locked
 	
 	var ctx = this.getContext("2d"),
 		width = ctx.canvas.clientWidth,

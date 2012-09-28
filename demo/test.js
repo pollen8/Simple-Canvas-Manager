@@ -5,21 +5,36 @@
 
 window.onload = function() {
 	
-	var scm = new ScmCore("node", {auto: true, interval: 100}),
-		one = new ScmLayer("one", 1, true),
-		pixel = new ScmPixel(0, 0, "#FF0000");
+	var scm = new ScmCore("node"),
+		ballLayer = new ScmLayer("ball", 2),
+		bg = new ScmLayer("bg", 1),
+		ball = new ScmCircle(200, 200, 20, "#FF0000");
+		
+	scm.push(ballLayer);
+	scm.push(bg);
 	
-	scm.push(one);
-	one.draw(pixel);
+	bg.setBackgroundColor("#0000FF");
+	ballLayer.draw(ball);
 	
-	//one.setAlpha(0); 
-	one.draw(new ScmPixel(25, 25, "#000000"));
-	one.draw(new ScmRect(50, 50, 200, 100, "#000000"));
-	one.draw(new ScmCircle(200, 200, 20, "#FF0000"));
-	one.draw(new ScmImage("http://s3.amazonaws.com/image.blingee.com/images17/content/output/000/000/000/042/635321387_1266394.gif?4", 300, 300));
+	scm.events.on("UP_ARROW", function(){
+		ball.setPos(ball.x, ball.y - 10);
+	}).on("DOWN_ARROW", function(){
+		ball.setPos(ball.x, ball.y + 10);
+	}).on("RIGHT_ARROW", function(){
+		ball.setPos(ball.x + 10, ball.y);
+	}).on("LEFT_ARROW", function(){
+		ball.setPos(ball.x - 10, ball.y);
+	});
 	
-	var text = new ScmText("Hello", 250, 250, "#008800");
-	one.setTextConfig("Arial", 140);
-	one.draw(text);
-	//one.clear();
+	// document.onkeydown = function(e) {
+	 	// var e = window.event || e;
+// 	
+		// console.log(e.keyCode);
+			// if (e.keyCode == 38)
+				// ball.setPos(ball.x, ball.y - 10);
+			// if (e.keyCode == 40)
+				// ball.setPos(ball.x, ball.y + 10);
+	// }
 }
+
+
