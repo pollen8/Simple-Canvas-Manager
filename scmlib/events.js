@@ -16,7 +16,7 @@ Provides some keyboard events for Scm
 
 function ScmEvent(constructMethod) {
 
-	if (!coreConstruct || constructMethod != "__coreConstruct__")
+	if (!constructMethod || constructMethod != "__coreConstruct__")
 		console.warning("SCM : There is no need to construct a ScmEvent. You can simply use the ScmCore field called : events.")
 	this.ref = {
 		"37": {type: "LEFT_ARROW", callback: null},
