@@ -20,8 +20,7 @@ Why SCM is powerfull ?
 ----------------------
 
 Assuming a simple example (live demo <a href="#">here</a>).
-
-This is how you can implement it with native js :
+This is how you can implement it with native js code :
 
 ```js
 window.onload = function() {
