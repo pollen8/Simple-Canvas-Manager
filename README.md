@@ -19,7 +19,7 @@ soon
 Why SCM is powerfull ?
 ----------------------
 
-Assuming a simple example (live demo <a href="#">here</a>).
+Assuming a simple example (live demo <a href="#">here</a>).<br />
 This is how you can implement it with native js code :
 
 ```js
@@ -92,3 +92,4 @@ window.onload = function() {
 	});
 }
 ```
+Simple Canvas Manager allows you to create quickly and intuitively Html5 canvas applications. Just Try it !!! 
