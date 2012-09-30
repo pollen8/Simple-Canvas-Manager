@@ -19,7 +19,7 @@ soon
 Why SCM is powerfull ?
 ----------------------
 
-Assuming a simple example (live demo <a href="#">here</a>).<br />
+Assuming a simple example (live demo <a href="http://myboon.github.com/Simple-Canvas-Manager/demo/">here</a>).<br />
 This is how you can implement it with native js code :
 
 ```js
