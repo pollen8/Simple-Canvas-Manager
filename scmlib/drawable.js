@@ -4,36 +4,40 @@ Provides some drawable objects.
 @module Drawable Objects
 **/
 
+var Scm = Scm || {}; // Namespace
+
 /**
 * Create a drawable pixel
 *
-* @class ScmPixel
+* @namespace Scm
+* @class Pixel
 * @constructor
 */
 
-function ScmPixel(x, y, color) { // TODO alpha
+Scm.Pixel = function(x, y, color) { // TODO alpha
 	this.x = x;
 	this.y = y;
 	this.color = color;
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
-ScmPixel.prototype.setAlpha = function(value) {
+Scm.Pixel.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-ScmPixel.prototype.draw = function(ctx) {
+Scm.Pixel.prototype.draw = function(ctx) {
 	ctx.fillRect(this.x, this.y, 1, 1);
 }
 
 /**
 * Create a drawable rectangle
 *
-* @class ScmRect
+* @namespace Scm
+* @class Rect
 * @constructor
 */
 
-function ScmRect(x, y, width, height, color) {
+Scm.Rect = function(x, y, width, height, color) {
 	this.x = x;
 	this.y = y;
 	this.width = width;
@@ -50,44 +54,45 @@ function ScmRect(x, y, width, height, color) {
 * @param {Integer} y New vertical position
 */
 
-ScmRect.prototype.setPos = function(x, y) {
+Scm.Rect.prototype.setPos = function(x, y) {
 	this.x = x;
 	this.y = y;
 }
 
-ScmRect.prototype.setSize = function(width, height) {
+Scm.Rect.prototype.setSize = function(width, height) {
 	this.width = width;
 	this.height = height;
 }
 
-ScmRect.prototype.setWidth = function(width) {
+Scm.Rect.prototype.setWidth = function(width) {
 	this.width = width;
 }
 
-ScmRect.prototype.setHeight = function(height) {
+Scm.Rect.prototype.setHeight = function(height) {
 	this.height = height;
 }
 
-ScmRect.prototype.setColor = function(color) {
+Scm.Rect.prototype.setColor = function(color) {
 	this.color = color;
 }
 
-ScmRect.prototype.setAlpha = function(value) {
+Scm.Rect.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-ScmRect.prototype.draw = function(ctx) {
+Scm.Rect.prototype.draw = function(ctx) {
 	ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
 /**
 * Create a drawable circle
 *
-* @class ScmCircle
+* @namespace Scm
+* @class Circle
 * @constructor
 */
 
-function ScmCircle(x, y, diameter, color) {
+Scm.Circle = function(x, y, diameter, color) {
 	this.x = x;
 	this.y = y;
 	this.diameter = diameter;
@@ -103,24 +108,24 @@ function ScmCircle(x, y, diameter, color) {
 * @param {Integer} y New vertical position
 */
 
-ScmCircle.prototype.setPos = function(x, y) {
+Scm.Circle.prototype.setPos = function(x, y) {
 	this.x = x;
 	this.y = y;
 }
 
-ScmCircle.prototype.setDiameter = function(diameter) {
+Scm.Circle.prototype.setDiameter = function(diameter) {
 	this.diameter = diameter;
 }
 
-ScmCircle.prototype.setColor = function(color) {
+Scm.Circle.prototype.setColor = function(color) {
 	this.color = color;
 }
 
-ScmCircle.prototype.setAlpha = function(value) {
+Scm.Circle.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-ScmCircle.prototype.draw = function(ctx) {
+Scm.Circle.prototype.draw = function(ctx) {
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, true);
 	ctx.closePath();
@@ -130,11 +135,12 @@ ScmCircle.prototype.draw = function(ctx) {
 /**
 * Create a drawable text object
 *
-* @class ScmText
+* @namespace Scm
+* @class Text
 * @constructor
 */
 
-function ScmText(str, x, y, color, alpha) {
+Scm.Text = function(str, x, y, color, alpha) {
 
 	/**
 	* @property str
@@ -175,27 +181,28 @@ function ScmText(str, x, y, color, alpha) {
 * @param {Integer} y New vertical position
 */
 
-ScmText.prototype.setPos = function(x, y) {
+Scm.Text.prototype.setPos = function(x, y) {
 	this.x = x;
 	this.y = y;
 }
 
-ScmText.prototype.setAlpha = function(value) {
+Scm.Text.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-ScmText.prototype.draw = function(ctx) {
+Scm.Text.prototype.draw = function(ctx) {
 	ctx.fillText(this.str, this.x, this.y);
 }
 
 /**
 * Create a drawable image object
 *
-* @class ScmImage
+* @namespace Scm
+* @class Image
 * @constructor
 */
 
-function ScmImage(src, x, y, alpha) {
+Scm.Image = function(src, x, y, alpha) {
 	
 	this.src = src;
 	this.x = x;
@@ -210,7 +217,7 @@ function ScmImage(src, x, y, alpha) {
 * @param {String} src Relative or absolute url
 */
 
-ScmImage.prototype.setSrc = function(src) {
+Scm.Image.prototype.setSrc = function(src) {
 	this.src = img;
 }
 
@@ -222,24 +229,24 @@ ScmImage.prototype.setSrc = function(src) {
 * @param {Integer} y New vertical position
 */
 
-ScmImage.prototype.setPos = function(x, y){	
+Scm.Image.prototype.setPos = function(x, y){	
 	this.x = x;
 	this.y = y;
 }
 
-ScmImage.prototype.setX = function(y){	
+Scm.Image.prototype.setX = function(y){	
 	this.x = x;
 }
 
-ScmImage.prototype.setY = function(y){	
+Scm.Image.prototype.setY = function(y){	
 	this.y = y;
 }
 
-ScmImage.prototype.setAlpha = function(value) {
+Scm.Image.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-ScmImage.prototype.draw = function(ctx) {
+Scm.Image.prototype.draw = function(ctx) {
 	
 	var img = new Image(),
 		x = this.x,

@@ -5,10 +5,10 @@
 
 window.onload = function() {
 	
-	var scm = new ScmCore("node"),
-		ballLayer = new ScmLayer("ball", 2),
-		bg = new ScmLayer("bg", 1),
-		ball = new ScmCircle(200, 200, 20, "#FF0000");
+	var scm = new Scm.Core("node"),
+		ballLayer = new Scm.Layer("ball", 2),
+		bg = new Scm.Layer("bg", 1),
+		ball = new Scm.Circle(200, 200, 20, "#FF0000");
 		
 	scm.push(ballLayer);
 	scm.push(bg);

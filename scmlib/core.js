@@ -4,16 +4,19 @@ Provides ScmCore and ScmLayer.
 @module Major Objects
 **/
 
+var Scm = Scm || {}; // Namespace
+
 /**
 * Create an instance of the SCM lib.
 *
-* @class ScmCore
+* @namespace Scm
+* @class Core
 * @constructor
 * @param node {String} This is the html div where SCM will work.
 * @param [updateInterval=10] {Integer} Update intervals (in milliseconds).
 */
 
-function ScmCore(node, updateInterval){
+Scm.Core = function(node, updateInterval){
 	
 	if ((this.node = document.getElementById(node)))
 	{
@@ -30,7 +33,7 @@ function ScmCore(node, updateInterval){
 		this.content = document.getElementById("scmContent");
 		this.layers = [];
 		this.updateInterval = updateInterval || 10;
-		this.events = new ScmEvent("__coreConstruct__");
+		this.events = new Scm.Event("__coreConstruct__");
 		//this.updateMode = getValidObject(updateMode, {auto: true, interval: 10});
 		
 		// ensure that bind is available
@@ -61,7 +64,7 @@ function ScmCore(node, updateInterval){
 * @param obj {Object} An ScmLayer object
 */
 
-ScmCore.prototype.push = function(obj) { // TODO : verifier qu'il n'existe pas
+Scm.Core.prototype.push = function(obj) { // TODO : verifier qu'il n'existe pas
 	
 	var canvas = document.createElement('canvas');
 	
@@ -81,7 +84,7 @@ ScmCore.prototype.push = function(obj) { // TODO : verifier qu'il n'existe pas
 * @return {Object} Return an ScmLayer Object.
 */
 
-ScmCore.prototype.getLayer = function(name) {
+Scm.Core.prototype.getLayer = function(name) {
 	
 	for (var i = 0; i != this.layers.length; i++)
 		if (this.layers[i].name == name)
@@ -98,7 +101,7 @@ ScmCore.prototype.getLayer = function(name) {
 * @method update
 */
 
-ScmCore.prototype.update = function() {
+Scm.Core.prototype.update = function() {
 
 	// Clear all layers
 	for (var i = 0; i != this.layers.length; i++)
@@ -115,14 +118,15 @@ ScmCore.prototype.update = function() {
 * Create a layer.<br />
 * ScmLayer are unlimited and can be stacked on top / bottom of another.
 *
-* @class ScmLayer
+* @namespace Scm
+* @class Layer
 * @constructor
 * @param name {String} Name of the layer.
 * @param zindex {Integer} Just a simple CSS z-index (the larger it is, the highest layer is)
 * @param [locked=false] {Boolean} Is the layer is locked ? If true, the layer can't be automaticly updated by the ScmCore.
 */
 
-function ScmLayer(name, zindex, locked) {
+Scm.Layer = function (name, zindex, locked) {
 	
 	this.name = name;
 	this.zindex = zindex;
@@ -143,7 +147,7 @@ function ScmLayer(name, zindex, locked) {
 * @return {Object} An Html object
 */
 
-ScmLayer.prototype.getHtmlElement = function() {
+Scm.Layer.prototype.getHtmlElement = function() {
 	return document.getElementById(this.htmlName);
 }
 
@@ -156,7 +160,7 @@ ScmLayer.prototype.getHtmlElement = function() {
 * @return {Object} Provides methods and properties for natively drawing on the canvas.
 */
 
-ScmLayer.prototype.getContext = function(type) {
+Scm.Layer.prototype.getContext = function(type) {
 	return this.getHtmlElement().getContext(type);
 }
 
@@ -168,7 +172,7 @@ ScmLayer.prototype.getContext = function(type) {
 * @param color {String} A CSS color value (ex: #FF00FF).
 */
 
-ScmLayer.prototype.setBackgroundColor = function(color) { // autoUpdate = false;
+Scm.Layer.prototype.setBackgroundColor = function(color) { // autoUpdate = false;
 	var ctx = this.getContext("2d"),
 		width = ctx.canvas.clientWidth,
 		height = ctx.canvas.clientHeight;
@@ -186,7 +190,7 @@ ScmLayer.prototype.setBackgroundColor = function(color) { // autoUpdate = false;
 * @param src {String} Relative or absolute url of an image.
 */
 
-ScmLayer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
+Scm.Layer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 	var ctx = this.getContext("2d"),
 		img = new Image();
 		
@@ -204,14 +208,14 @@ ScmLayer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 * @param value {Integer} Alpha value : between 0 and 1.
 */
 
-ScmLayer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
+Scm.Layer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
 	var ctx = this.getContext("2d");
 	
 	ctx.globalAlpha = value;
 	this.update(ctx);
 }
 
-ScmLayer.prototype.exist = function(object) {
+Scm.Layer.prototype.exist = function(object) {
 	
 	for (var i = 0; i != this.objects.length; i++)
 		if (this.objects[i] == object)
@@ -227,7 +231,7 @@ ScmLayer.prototype.exist = function(object) {
 * @param drawable {Object} Need a <a href="../modules/Drawable%20Objects.html">drawable object</a>.
 */
 
-ScmLayer.prototype.draw = function(object) {
+Scm.Layer.prototype.draw = function(object) {
 	
 	if (!this.exist(object))
 		this.objects.push(object);
@@ -248,9 +252,8 @@ ScmLayer.prototype.draw = function(object) {
 		ctx.restore();
 }
 
-ScmLayer.prototype.drawAll = function() {
+Scm.Layer.prototype.drawAll = function() {
 
-	
 	var ctx = this.getContext("2d"),
 		object;
 	
@@ -278,7 +281,7 @@ ScmLayer.prototype.drawAll = function() {
 * @method clear
 */
 
-ScmLayer.prototype.clear = function() { // TODO : voir pour le locked
+Scm.Layer.prototype.clear = function() { // TODO : voir pour le locked
 	
 	var ctx = this.getContext("2d"),
 		width = ctx.canvas.clientWidth,
@@ -287,11 +290,11 @@ ScmLayer.prototype.clear = function() { // TODO : voir pour le locked
 	ctx.clearRect(0, 0, width, height);
 }
 
-ScmLayer.prototype.getTextConfig = function() {
+Scm.Layer.prototype.getTextConfig = function() {
 	return {font: this.textFont, size: this.textSize};
 }
 
-ScmLayer.prototype.setTextConfig = function(font, size) {
+Scm.Layer.prototype.setTextConfig = function(font, size) {
 	this.textFont = font;
 	this.textSize = size;
 	
@@ -306,7 +309,7 @@ ScmLayer.prototype.setTextConfig = function(font, size) {
 * @method lock
 */
 
-ScmLayer.prototype.lock = function() {
+Scm.Layer.prototype.lock = function() {
 	this.locked = true;
 }
 
@@ -317,7 +320,7 @@ ScmLayer.prototype.lock = function() {
 * @method unlock
 */
 
-ScmLayer.prototype.unlock = function() {
+Scm.Layer.prototype.unlock = function() {
 	this.locked = false;
 }
 

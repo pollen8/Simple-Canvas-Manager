@@ -4,17 +4,20 @@ Provides some keyboard events for Scm
 @module Events
 **/
 
+var Scm = Scm || {}; // Namespace
+
 /**
 * Create a ScmEvent <br />
 * There is no need to construct a ScmEvent. You can simply use the ScmCore field called : events.
 * 
-* @class ScmEvent
+* @namespace Scm
+* @class Event
 * @constructor
 */
 
 //TODO : rajouter un lien dans la doc vers le champs events.
 
-function ScmEvent(constructMethod) {
+Scm.Event = function(constructMethod) {
 
 	if (!constructMethod || constructMethod != "__coreConstruct__")
 		console.warning("SCM : There is no need to construct a ScmEvent. You can simply use the ScmCore field called : events.")
@@ -45,7 +48,7 @@ function ScmEvent(constructMethod) {
 * @param callback {Function} This function is called after the event.
 */
 
-ScmEvent.prototype.on = function(type, callback) {
+Scm.Event.prototype.on = function(type, callback) {
 	
 	var found = false;
 		
