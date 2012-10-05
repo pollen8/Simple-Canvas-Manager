@@ -7,23 +7,80 @@ Provides some drawable objects.
 var Scm = Scm || {}; // Namespace
 
 /**
-* Create a drawable pixel
+* This is the Drawable object.
+* All Class in this module should inherit of this object !
 *
-* @namespace Scm
-* @class Pixel
-* @constructor
+* @class Drawable
 */
 
-Scm.Pixel = function(x, y, color) { // TODO alpha
+var Drawable = function(x, y, color, alpha) {
+	
 	this.x = x;
 	this.y = y;
 	this.color = color;
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
-Scm.Pixel.prototype.setAlpha = function(value) {
+/**
+* Set horizontal and vertical position.
+*
+* @method setPos
+* @param x {Integer} New horizontal position.
+* @param y {Integer} New vertical position.
+*/
+
+Drawable.prototype.setPos = function(x, y) {
+	this.x = x;
+	this.y = y;
+}
+
+/**
+* Set color.
+*
+* @method setColor
+* @param color {String} A CSS Color Value (like #00FF00).
+*/
+
+Drawable.prototype.setColor = function(color) {
+	this.color = color;
+}
+
+/**
+* Set an alpha value (between 0 and 1).
+*
+* @method setAlpha
+* @param value {Integer} An alpha value (between 0 and 1).
+*/
+
+Drawable.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
+
+Drawable.prototype.draw = function(ctx) {
+	console.error("SCM : Error ! You should implement a draw method in your own object.");
+}
+
+/**
+* Create a drawable pixel
+*
+* @namespace Scm
+* @class Pixel
+* @extends Drawable
+* @constructor
+* @param x {Integer} Vertical position.
+* @param y {Integer} Horizontal position.
+* @param color {String} A CSS Color value (like #00FF00).
+* @param [alpha=1] {Integer} An alpha value (between 0 and 1).
+*/
+
+Scm.Pixel = function(x, y, color, alpha) { // TODO alpha
+	
+	// inherit from Drawable
+	Drawable.call(this, x, y, color, alpha);
+}
+
+// inherit from Drawable
+Scm.Utils.constructInheritance(Scm.Pixel, Drawable);
 
 Scm.Pixel.prototype.draw = function(ctx) {
 	ctx.fillRect(this.x, this.y, 1, 1);
@@ -34,50 +91,39 @@ Scm.Pixel.prototype.draw = function(ctx) {
 *
 * @namespace Scm
 * @class Rect
+* @extends Drawable
 * @constructor
+* @param x {Integer} Vertical position.
+* @param y {Integer} Horizontal position.
+* @param width {Integer} Width value.
+* @param height {Integer} Height value.
+* @param color {String} A CSS Color value (like #00FF00).
+* @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Rect = function(x, y, width, height, color) {
-	this.x = x;
-	this.y = y;
+Scm.Rect = function(x, y, width, height, color, alpha) { // TODO : doc
+
+	// inherit from Drawable
+	Drawable.call(this, x, y, color, alpha);
+	
 	this.width = width;
 	this.height = height;
-	this.color = color;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
+
+// inherited from DRAWABLE
+Scm.Utils.constructInheritance(Scm.Rect, Drawable);
 
 /**
-* Set the Rectangle position
+* Set the width and height of the rectangle.
 *
-* @method setPos
-* @param {Integer} x New horizontal position
-* @param {Integer} y New vertical position
+* @method setSize
+* @param width {Integer} New width value.
+* @param height {Integer} New height value.
 */
-
-Scm.Rect.prototype.setPos = function(x, y) {
-	this.x = x;
-	this.y = y;
-}
 
 Scm.Rect.prototype.setSize = function(width, height) {
 	this.width = width;
 	this.height = height;
-}
-
-Scm.Rect.prototype.setWidth = function(width) {
-	this.width = width;
-}
-
-Scm.Rect.prototype.setHeight = function(height) {
-	this.height = height;
-}
-
-Scm.Rect.prototype.setColor = function(color) {
-	this.color = color;
-}
-
-Scm.Rect.prototype.setAlpha = function(value) {
-	this.alpha = value;
 }
 
 Scm.Rect.prototype.draw = function(ctx) {
@@ -89,43 +135,38 @@ Scm.Rect.prototype.draw = function(ctx) {
 *
 * @namespace Scm
 * @class Circle
+* @extends Drawable
 * @constructor
+* @param x {Integer} Vertical position.
+* @param y {Integer} Horizontal position.
+* @param diameter {Integer} The circle diameter.
+* @param color {String} A CSS Color value (like #00FF00).
+* @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Circle = function(x, y, diameter, color) {
-	this.x = x;
-	this.y = y;
+Scm.Circle = function(x, y, diameter, color, alpha) { // TODO : doc
+	
+	// inherit from Drawable
+	Drawable.call(this, x, y, color, alpha);
+	
 	this.diameter = diameter;
-	this.color = color;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
+
+// inherit from Drawable
+Scm.Utils.constructInheritance(Scm.Circle, Drawable);
 
 /**
-* Set the Circle position
+* Set the circle diameter.
 *
-* @method setPos
-* @param {Integer} x New horizontal position
-* @param {Integer} y New vertical position
+* @method setDiameter
+* @param diameter {Integer} New circle's diameter.
 */
-
-Scm.Circle.prototype.setPos = function(x, y) {
-	this.x = x;
-	this.y = y;
-}
 
 Scm.Circle.prototype.setDiameter = function(diameter) {
 	this.diameter = diameter;
 }
 
-Scm.Circle.prototype.setColor = function(color) {
-	this.color = color;
-}
-
-Scm.Circle.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
-
-Scm.Circle.prototype.draw = function(ctx) {
+Scm.Circle.prototype.draw = function(ctx, lol) {
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, true);
 	ctx.closePath();
@@ -137,60 +178,33 @@ Scm.Circle.prototype.draw = function(ctx) {
 *
 * @namespace Scm
 * @class Text
+* @extends Drawable
 * @constructor
+* @param str {String} Text to display.
+* @param x {Integer} Vertical position.
+* @param y {Integer} Horizontal position.
+* @param [color=#000000] {String} A CSS Color value (like #00FF00).
+* @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
 Scm.Text = function(str, x, y, color, alpha) {
 
+	// inherit from Drawable
+	color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
+	Drawable.call(this, x, y, color, alpha);
+	
 	/**
 	* @property str
 	* @type String
 	*/
 	this.str = str;
-	
-	/**
-	* @property x
-	* @type Integer
-	*/
-	this.x = x;
-	
-	/**
-	* @property y
-	* @type Integer
-	*/
-	this.y = y;
-	
-	/**
-	* @property color
-	* @type String
-	*/
-	this.color = ((typeof(color) != "undefined") ? (color) : ("#000000"));
-	
-	/**
-	* @property alpha
-	* @type Integer
-	*/
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
 
-/**
-* Set the Text position
-*
-* @method setPos
-* @param {Integer} x New horizontal position
-* @param {Integer} y New vertical position
-*/
-
-Scm.Text.prototype.setPos = function(x, y) {
-	this.x = x;
-	this.y = y;
-}
-
-Scm.Text.prototype.setAlpha = function(value) {
-	this.alpha = value;
-}
+// inherit from Drawable
+Scm.Utils.constructInheritance(Scm.Text, Drawable);
 
 Scm.Text.prototype.draw = function(ctx) {
+	console.log("hop !");
 	ctx.fillText(this.str, this.x, this.y);
 }
 
@@ -199,51 +213,35 @@ Scm.Text.prototype.draw = function(ctx) {
 *
 * @namespace Scm
 * @class Image
+* @extends Drawable
 * @constructor
+* @param src {String} Relative or absolute image url.
+* @param x {Integer} Vertical position.
+* @param y {Integer} Horizontal position.
+* @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
 Scm.Image = function(src, x, y, alpha) {
 	
+	// inherit from Drawable
+	Drawable.call(this, x, y, null, alpha);
+	
+	console.log(src);
 	this.src = src;
-	this.x = x;
-	this.y = y;
-	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
 }
+
+// inherit from Drawable
+Scm.Utils.constructInheritance(Scm.Image, Drawable);
 
 /**
 * Set the Image url 
 *
 * @method setSrc
-* @param {String} src Relative or absolute url
+* @param src {String} Relative or absolute url.
 */
 
 Scm.Image.prototype.setSrc = function(src) {
-	this.src = img;
-}
-
-/**
-* Set the Image position
-*
-* @method setPos
-* @param {Integer} x New horizontal position
-* @param {Integer} y New vertical position
-*/
-
-Scm.Image.prototype.setPos = function(x, y){	
-	this.x = x;
-	this.y = y;
-}
-
-Scm.Image.prototype.setX = function(y){	
-	this.x = x;
-}
-
-Scm.Image.prototype.setY = function(y){	
-	this.y = y;
-}
-
-Scm.Image.prototype.setAlpha = function(value) {
-	this.alpha = value;
+	this.src = src;
 }
 
 Scm.Image.prototype.draw = function(ctx) {

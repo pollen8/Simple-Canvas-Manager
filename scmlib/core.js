@@ -34,7 +34,6 @@ Scm.Core = function(node, updateInterval){
 		this.layers = [];
 		this.updateInterval = updateInterval || 10;
 		this.events = new Scm.Event("__coreConstruct__");
-		//this.updateMode = getValidObject(updateMode, {auto: true, interval: 10});
 		
 		// ensure that bind is available
 		if (!('bind' in Function.prototype)) {
@@ -58,10 +57,10 @@ Scm.Core = function(node, updateInterval){
 }
 
 /**
-* Push a layer in the ScmCore.
+* Push a layer in the Scm.Core.
 *
 * @method push
-* @param obj {Object} An ScmLayer object
+* @param obj {Object} An Scm.Layer object
 */
 
 Scm.Core.prototype.push = function(obj) { // TODO : verifier qu'il n'existe pas
@@ -81,7 +80,7 @@ Scm.Core.prototype.push = function(obj) { // TODO : verifier qu'il n'existe pas
 * 
 * @method getLayer
 * @param name {String} Name of the Layer.
-* @return {Object} Return an ScmLayer Object.
+* @return {Object} Return an Scm.Layer Object.
 */
 
 Scm.Core.prototype.getLayer = function(name) {
@@ -95,7 +94,7 @@ Scm.Core.prototype.getLayer = function(name) {
 
 /**
 * Update all the layers.<br />
-* This method is called periodically by the ScmCore.<br />
+* This method is called periodically by the core.<br />
 * This method is callable normally too.
 * 
 * @method update
@@ -247,6 +246,7 @@ Scm.Layer.prototype.draw = function(object) {
 	if (object.color) 
 		ctx.fillStyle = object.color;
 	object.draw(ctx); // call the object's draw method
+	//console.log(object);
 	
 	if (object.alpha)
 		ctx.restore();
@@ -322,23 +322,4 @@ Scm.Layer.prototype.lock = function() {
 
 Scm.Layer.prototype.unlock = function() {
 	this.locked = false;
-}
-
-/*
- * SCM UTILS
- */
-
-function getValidObject(object, def){
-	
-	// Transform a missing object key to his default key
-	// If the object not exist, the function return the default object
-	// TODO : check key type (bool, string, integer ...)
-
-	var ret = def;
-	
-	if (typeof(object) != "undefined")
-		for (key in def)
-			ret[key] = ((!object.hasOwnProperty(key)) ? (def[key]) : (object[key]));
-	
-	return ret;
 }

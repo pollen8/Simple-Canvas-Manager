@@ -8,7 +8,7 @@ var Scm = Scm || {}; // Namespace
 
 /**
 * Create a ScmEvent <br />
-* There is no need to construct a ScmEvent. You can simply use the ScmCore field called : events.
+* There is no need to construct a ScmEvent. You can simply use the Scm.Core field called : events.
 * 
 * @namespace Scm
 * @class Event
