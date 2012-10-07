@@ -15,7 +15,7 @@ var Scm = Scm || {}; // Namespace
 * @constructor
 */
 
-//TODO : rajouter un lien dans la doc vers le champs events.
+//TODO : rajouter un lien dans la doc vers le champs events. | Passer en static
 
 Scm.Event = function(constructMethod) {
 
@@ -25,13 +25,18 @@ Scm.Event = function(constructMethod) {
 		"37": {type: "LEFT_ARROW", callback: null},
 		"38": {type: "UP_ARROW", callback: null},
 		"39": {type: "RIGHT_ARROW", callback: null},
-		"40": {type: "DOWN_ARROW", callback: null},
+		"40": {type: "DOWN_ARROW", callback: null}
 	}
+	
+	// letters
+	for (var i = 65; i <= 90; i++)
+		this.ref[String(i)] = {type: String.fromCharCode(i), callback: null};
 	
 	var that = this;
 	document.onkeydown = function(e) {
 	 	var e = window.event || e;
 		
+		//console.log(e.keyCode);
 		if (typeof(that.ref[e.keyCode]) != "undefined" && that.ref[e.keyCode].callback)
 			(that.ref[e.keyCode].callback)();
 	}
@@ -65,3 +70,28 @@ Scm.Event.prototype.on = function(type, callback) {
 	
 	return this;
 }
+
+// Scm.Event.prototype.create = function(name) {
+// 	
+	// var event;
+// 	
+	// if (document.createEvent) {
+		// event = document.createEvent("HTMLEvents");
+		// event.initEvent("dataavailable", true, true);
+	// }
+	// else {
+	    // event = document.createEventObject();
+	    // event.eventType = "dataavailable";
+	// }
+// 	
+	// event.eventName = eventName;
+	// event.memo = memo || {};
+// 	
+	// if (document.createEvent)
+    	// element.dispatchEvent(event);
+    // else
+    	// element.fireEvent(event.eventType, event);
+// }
+
+
+// TODO create & fire

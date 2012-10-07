@@ -19,6 +19,12 @@ var Drawable = function(x, y, color, alpha) {
 	this.y = y;
 	this.color = color;
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
+	this.currentEffect = {
+		duration: 0,
+		property: null,
+		variation: 0,
+		limit: 0,
+	};
 }
 
 /**
@@ -54,6 +60,49 @@ Drawable.prototype.setColor = function(color) {
 
 Drawable.prototype.setAlpha = function(value) {
 	this.alpha = value;
+}
+
+// TODO : notifier la fin des effects pour reset le currentEffect
+
+Drawable.prototype.fadeIn = function(duration) {
+
+	duration = duration || GLOBAL_UPDATE_INTERVAL;
+	if (duration < GLOBAL_UPDATE_INTERVAL)
+		console.error("SCM : the duration of the fadeIn event is lower than the Scm.Core Update Interval (" + GLOBAL_UPDATE_INTERVAL + " ms)");
+
+	this.currentEffect = {
+		duration: duration,
+		property: "alpha",
+		variation: ((1 - this.alpha) / (duration / GLOBAL_UPDATE_INTERVAL)),
+		limit: 1,
+	};
+	
+	//console.log(document.getElementById("scmContent"));
+	// document.getElementById("scmContent").addEventListener('testDone', function(e) {
+	  // alert('1. Div capture ran');
+	// }, true);
+}
+
+Drawable.prototype.fadeOut = function(duration) {
+
+	duration = duration || GLOBAL_UPDATE_INTERVAL;
+	if (duration < GLOBAL_UPDATE_INTERVAL)
+		console.error("SCM : the duration of the fadeOut event is lower than the Scm.Core Update Interval (" + GLOBAL_UPDATE_INTERVAL + " ms)");
+		
+	this.currentEffect = {
+		duration: duration,
+		property: "alpha",
+		variation: -((this.alpha - 0) / (duration / GLOBAL_UPDATE_INTERVAL)),
+		limit: 0,
+	};
+}
+
+Drawable.prototype.hide = function() {
+	this.alpha = 0;
+}
+
+Drawable.prototype.show = function() {
+	this.alpha = 1;
 }
 
 Drawable.prototype.draw = function(ctx) {

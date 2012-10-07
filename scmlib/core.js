@@ -16,6 +16,8 @@ var Scm = Scm || {}; // Namespace
 * @param [updateInterval=10] {Integer} Update intervals (in milliseconds).
 */
 
+var GLOBAL_UPDATE_INTERVAL = 10;
+
 Scm.Core = function(node, updateInterval){
 	
 	if ((this.node = document.getElementById(node)))
@@ -33,6 +35,7 @@ Scm.Core = function(node, updateInterval){
 		this.content = document.getElementById("scmContent");
 		this.layers = [];
 		this.updateInterval = updateInterval || 10;
+		GLOBAL_UPDATE_INTERVAL = this.updateInterval;
 		this.events = new Scm.Event("__coreConstruct__");
 		
 		// ensure that bind is available
@@ -50,7 +53,7 @@ Scm.Core = function(node, updateInterval){
 		}
 
 		// run updateLoop
-		window.setInterval(this.update.bind(this), updateInterval);
+		window.setInterval(this.update.bind(this), this.updateInterval);
 	}	
 	else
 		console.error("SCM : #" + node + " doesn't exist !");
@@ -109,8 +112,7 @@ Scm.Core.prototype.update = function() {
 			
 	// Draw all objects
 	for (var i = 0; i != this.layers.length; i++)
-		for (var j = 0; j != this.layers[i].objects.length; j++)
-			this.layers[i].drawAll();
+		this.layers[i].drawAll();
 }
 
 /**
@@ -235,21 +237,21 @@ Scm.Layer.prototype.draw = function(object) {
 	if (!this.exist(object))
 		this.objects.push(object);
 	
-	var ctx = this.getContext("2d");
-	
-	if (object.alpha)
-	{
-		ctx.save();
-		ctx.globalAlpha = object.alpha;
-	}
-	
-	if (object.color) 
-		ctx.fillStyle = object.color;
-	object.draw(ctx); // call the object's draw method
-	//console.log(object);
-	
-	if (object.alpha)
-		ctx.restore();
+	// var ctx = this.getContext("2d");
+// 	
+	// if (object.alpha)
+	// {
+		// ctx.save();
+		// ctx.globalAlpha = object.alpha;
+	// }
+// 	
+	// if (object.color) 
+		// ctx.fillStyle = object.color;
+	// object.draw(ctx); // call the object's draw method
+	// //console.log(object);
+// 	
+	// if (object.alpha)
+		// ctx.restore();
 }
 
 Scm.Layer.prototype.drawAll = function() {
@@ -260,18 +262,33 @@ Scm.Layer.prototype.drawAll = function() {
 	for (var i = 0; i != this.objects.length; i++)
 	{
 		object = this.objects[i];
-		if (object.alpha)
+		if (object.alpha > 0 || object.currentEffect.property == "alpha") // optimization
 		{
 			ctx.save();
 			ctx.globalAlpha = object.alpha;
-		}
-		
-		if (object.color) 
-			ctx.fillStyle = object.color;
-		object.draw(ctx); // call the object's draw method
-		
-		if (object.alpha)
+			
+			if (object.currentEffect.duration - GLOBAL_UPDATE_INTERVAL >= 0)
+				{
+					object[object.currentEffect.property] += object.currentEffect.variation;
+					
+					// reset limit
+					if ((object.currentEffect.variation < 0 && object.currentEffect.limit > object[object.currentEffect.property]) ||
+						(object.currentEffect.variation >= 0 && object[object.currentEffect.property] > object.currentEffect.limit))
+						object[object.currentEffect.property] = object.currentEffect.limit;
+						
+					object.currentEffect.duration = object.currentEffect.duration - GLOBAL_UPDATE_INTERVAL;
+					if (object.currentEffect.duration == 0)
+					{
+						// TODO : send event
+					}
+				}
+			
+			if (object.color) 
+				ctx.fillStyle = object.color;
+			object.draw(ctx); // call the object's draw method
+			
 			ctx.restore();
+		}
 	}
 }
 
