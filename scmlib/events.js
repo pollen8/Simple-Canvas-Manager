@@ -12,86 +12,103 @@ var Scm = Scm || {}; // Namespace
 * 
 * @namespace Scm
 * @class Event
+* @static
 * @constructor
 */
 
-//TODO : rajouter un lien dans la doc vers le champs events. | Passer en static
+Scm.Event = Scm.Event || {};
 
-Scm.Event = function(constructMethod) {
+Scm.Event = {
+	ref: {
+		"37": {type: "left_arrow", callback: null},
+		"38": {type: "up_arrow", callback: null},
+		"39": {type: "right_arrow", callback: null},
+		"40": {type: "down_arrow", callback: null}
+	},
+	scmNode: null
+};
 
-	if (!constructMethod || constructMethod != "__coreConstruct__")
-		console.warning("SCM : There is no need to construct a ScmEvent. You can simply use the ScmCore field called : events.")
-	this.ref = {
-		"37": {type: "LEFT_ARROW", callback: null},
-		"38": {type: "UP_ARROW", callback: null},
-		"39": {type: "RIGHT_ARROW", callback: null},
-		"40": {type: "DOWN_ARROW", callback: null}
-	}
-	
+Scm.Event.init = function(scmNode) {
+
 	// letters
 	for (var i = 65; i <= 90; i++)
-		this.ref[String(i)] = {type: String.fromCharCode(i), callback: null};
-	
-	var that = this;
+		Scm.Event.ref[String(i)] = {type: String.fromCharCode(i + 32), callback: null};
+			
 	document.onkeydown = function(e) {
 	 	var e = window.event || e;
-		
-		//console.log(e.keyCode);
-		if (typeof(that.ref[e.keyCode]) != "undefined" && that.ref[e.keyCode].callback)
-			(that.ref[e.keyCode].callback)();
+
+		if (typeof(Scm.Event.ref[e.keyCode]) != "undefined" && Scm.Event.ref[e.keyCode].callback)
+			(Scm.Event.ref[e.keyCode].callback)();
 	}
+
+	// create click event
+	Scm.Event.scmNode = scmNode;
+	// document.getElementById(scmNode).addEventListener('click', function(e) {
+		// return e;
+	// }, false);
 }
 
 //TODO : rajouter un lien dans la doc vers la liste des key
 
 /**
-* Bind keyboard event.
+* Bind an event.
 *
 * @method on
 * @chainable
-* @param type {String} Event type (such as "LEFT_ARROW", "UP_ARROW", "RIGHT_ARROW", "DOWN_ARROW" ...)
+* @param type {String} Event type (such as "click" "left_arrow" ...)
 * @param callback {Function} This function is called after the event.
 */
 
-Scm.Event.prototype.on = function(type, callback) {
+Scm.Event.on = function(type, callback) {
 	
 	var found = false;
 		
+	// SCM Event
 	for (var entry in this.ref) {
-		if (this.ref[entry].type == type)
+		if (Scm.Event.ref[entry].type == type)
 		{
-			this.ref[entry].callback = callback;
+			Scm.Event.ref[entry].callback = callback;
 			found = true;
 		}
 	}
-	
-	if (!found)
-		console.error("SCM : event " + type + " doesn't exist !");
-	
-	return this;
+
+	if (!found) //Javascript Event
+	{
+		document.getElementById(Scm.Event.scmNode).addEventListener(type, function(e){
+			
+			var ret = {x: 0, y: 0};
+			
+			if (typeof(e.offsetX) != "undefined" &&
+				typeof(e.offsetY) != "undefined")
+			{
+				ret.x = e.offsetX + 1;
+				ret.y = e.offsetY + 1;
+			}
+			else
+				ret = e;	
+			callback(ret);
+			
+		}, true);
+	}
+	return Scm.Event;
 }
 
-// Scm.Event.prototype.create = function(name) {
-// 	
-	// var event;
-// 	
-	// if (document.createEvent) {
-		// event = document.createEvent("HTMLEvents");
-		// event.initEvent("dataavailable", true, true);
-	// }
-	// else {
-	    // event = document.createEventObject();
-	    // event.eventType = "dataavailable";
-	// }
-// 	
-	// event.eventName = eventName;
-	// event.memo = memo || {};
-// 	
-	// if (document.createEvent)
-    	// element.dispatchEvent(event);
-    // else
-    	// element.fireEvent(event.eventType, event);
-// }
+/**
+* Creates a custom event with the given name.
+* The custom event has all the same properties and methods of native events.
+*
+* @method fire
+* @param name {String} Event name.
+*/
 
+Scm.Event.fire = function(name) { // TODO pass object
+	
+    var newEvent = document.createEvent('Events');
+    
+    newEvent.initEvent(name, true, false);
+    document.getElementById(Scm.Event.scmNode).dispatchEvent(newEvent);
+}
 
-// TODO create & fire
+Scm.Event.init("scmContent");
+
+//Scm.Event.init();

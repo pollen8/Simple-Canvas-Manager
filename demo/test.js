@@ -22,24 +22,28 @@ window.onload = function() {
 	ballLayer.draw(ball2);
 	ballLayer.draw(ball3);
 		
-	scm.events.on("A", function(){
+	Scm.Event.on("a", function(){
 		ball.fadeIn();
 		ball1.fadeIn(2000);
 		ball2.fadeIn(3000);
 		ball3.fadeIn(10000);
-	}).on("B", function(){
+	}).on("b", function(){
 		ball.fadeOut(3000);
 		ball1.fadeOut(2000);
 		ball2.fadeOut(1000);
 		ball3.fadeOut(100);
-	}).on("UP_ARROW", function(){
+	}).on("up_arrow", function(){
 		ball.setPos(ball.x, ball.y - 10);
-	}).on("DOWN_ARROW", function(){
+	}).on("down_arrow", function(){
 		ball.setPos(ball.x, ball.y + 10);
-	}).on("RIGHT_ARROW", function(){
+	}).on("right_arrow", function(){
 		ball.setPos(ball.x + 10, ball.y);
-	}).on("LEFT_ARROW", function(){
+	}).on("left_arrow", function(){
 		ball.setPos(ball.x - 10, ball.y);
+	});
+	
+	Scm.Event.on("click", function(e) {
+		ballLayer.draw(new Scm.Circle(e.x, e.y, 20, "#FF00FF"));
 	});
 }
 

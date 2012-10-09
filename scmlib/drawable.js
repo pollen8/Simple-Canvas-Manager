@@ -13,6 +13,8 @@ var Scm = Scm || {}; // Namespace
 * @class Drawable
 */
 
+var constructEvent = false;
+
 var Drawable = function(x, y, color, alpha) {
 	
 	this.x = x;
@@ -25,6 +27,22 @@ var Drawable = function(x, y, color, alpha) {
 		variation: 0,
 		limit: 0,
 	};
+	
+	// construct all Drawable Events
+	// When an effect is done Drawable.currentEffect will be reset
+	// Using a boolean is an ugly method. I am looking for a good way ... 
+	if (!constructEvent)
+	{
+		Scm.Event.on("effectDone", function(e) {
+			this.currentEffect = {
+				duration: 0,
+				property: null,
+				variation: 0,
+				limit: 0,
+			};
+		});
+		constructEvent = true;
+	}
 }
 
 /**
@@ -76,11 +94,6 @@ Drawable.prototype.fadeIn = function(duration) {
 		variation: ((1 - this.alpha) / (duration / GLOBAL_UPDATE_INTERVAL)),
 		limit: 1,
 	};
-	
-	//console.log(document.getElementById("scmContent"));
-	// document.getElementById("scmContent").addEventListener('testDone', function(e) {
-	  // alert('1. Div capture ran');
-	// }, true);
 }
 
 Drawable.prototype.fadeOut = function(duration) {
@@ -253,7 +266,6 @@ Scm.Text = function(str, x, y, color, alpha) {
 Scm.Utils.constructInheritance(Scm.Text, Drawable);
 
 Scm.Text.prototype.draw = function(ctx) {
-	console.log("hop !");
 	ctx.fillText(this.str, this.x, this.y);
 }
 
@@ -275,7 +287,6 @@ Scm.Image = function(src, x, y, alpha) {
 	// inherit from Drawable
 	Drawable.call(this, x, y, null, alpha);
 	
-	console.log(src);
 	this.src = src;
 }
 

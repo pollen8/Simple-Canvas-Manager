@@ -36,7 +36,9 @@ Scm.Core = function(node, updateInterval){
 		this.layers = [];
 		this.updateInterval = updateInterval || 10;
 		GLOBAL_UPDATE_INTERVAL = this.updateInterval;
-		this.events = new Scm.Event("__coreConstruct__");
+		
+		//init Event
+		
 		
 		// ensure that bind is available
 		if (!('bind' in Function.prototype)) {
@@ -277,10 +279,8 @@ Scm.Layer.prototype.drawAll = function() {
 						object[object.currentEffect.property] = object.currentEffect.limit;
 						
 					object.currentEffect.duration = object.currentEffect.duration - GLOBAL_UPDATE_INTERVAL;
-					if (object.currentEffect.duration == 0)
-					{
-						// TODO : send event
-					}
+					if (object.currentEffect.duration == 0) // the effect is finished
+						Scm.Event.fire("effectDone");
 				}
 			
 			if (object.color) 

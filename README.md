@@ -81,13 +81,13 @@ window.onload = function() {
 	bg.setBackgroundColor("#0000FF");
 	ballLayer.draw(ball);
 	
-	scm.events.on("UP_ARROW", function(){
+	Scm.Event.on("up_arrow", function(){
 		ball.setPos(ball.x, ball.y - 10);
-	}).on("DOWN_ARROW", function(){
+	}).on("down_arrow", function(){
 		ball.setPos(ball.x, ball.y + 10);
-	}).on("RIGHT_ARROW", function(){
+	}).on("right_arrow", function(){
 		ball.setPos(ball.x + 10, ball.y);
-	}).on("LEFT_ARROW", function(){
+	}).on("left_arrow", function(){
 		ball.setPos(ball.x - 10, ball.y);
 	});
 }
