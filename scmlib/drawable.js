@@ -80,8 +80,6 @@ Drawable.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-// TODO : notifier la fin des effects pour reset le currentEffect
-
 Drawable.prototype.fadeIn = function(duration) {
 
 	duration = duration || GLOBAL_UPDATE_INTERVAL;
@@ -135,7 +133,7 @@ Drawable.prototype.draw = function(ctx) {
 * @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Pixel = function(x, y, color, alpha) { // TODO alpha
+Scm.Pixel = function(x, y, color, alpha) {
 	
 	// inherit from Drawable
 	Drawable.call(this, x, y, color, alpha);
@@ -163,7 +161,7 @@ Scm.Pixel.prototype.draw = function(ctx) {
 * @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Rect = function(x, y, width, height, color, alpha) { // TODO : doc
+Scm.Rect = function(x, y, width, height, color, alpha) {
 
 	// inherit from Drawable
 	Drawable.call(this, x, y, color, alpha);
@@ -206,7 +204,7 @@ Scm.Rect.prototype.draw = function(ctx) {
 * @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Circle = function(x, y, diameter, color, alpha) { // TODO : doc
+Scm.Circle = function(x, y, diameter, color, alpha) {
 	
 	// inherit from Drawable
 	Drawable.call(this, x, y, color, alpha);

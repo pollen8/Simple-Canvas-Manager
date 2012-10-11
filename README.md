@@ -1,6 +1,6 @@
 #Simple Canvas Manager
 
-Simple Canvas Manager (SCM) is a javascript library that offers you methods to work easily with the HTML5 canvas element.
+Simple Canvas Manager (SCM) is a javascript library that offers you methods to work quickly and intuitively with the HTML5 canvas element.
 
 Local Documentation
 -------------------
@@ -20,7 +20,7 @@ Why SCM is powerfull ?
 ----------------------
 
 Assuming a simple example (live demo <a href="http://myboon.github.com/Simple-Canvas-Manager/demo/">here</a>).<br />
-This is how you can implement it with native js code :
+This is how you can implement it with native javascript code :
 
 ```js
 window.onload = function() {

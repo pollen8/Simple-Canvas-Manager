@@ -41,11 +41,7 @@ Scm.Event.init = function(scmNode) {
 			(Scm.Event.ref[e.keyCode].callback)();
 	}
 
-	// create click event
 	Scm.Event.scmNode = scmNode;
-	// document.getElementById(scmNode).addEventListener('click', function(e) {
-		// return e;
-	// }, false);
 }
 
 //TODO : rajouter un lien dans la doc vers la liste des key
@@ -94,7 +90,7 @@ Scm.Event.on = function(type, callback) {
 }
 
 /**
-* Creates a custom event with the given name.
+* Creates a custom event with the given name.<br />
 * The custom event has all the same properties and methods of native events.
 *
 * @method fire

@@ -4,7 +4,7 @@ Scm.Utils = Scm.Utils || {}; // Sub Namespace
 
 Scm.Utils.constructInheritance = function(a, b) {
 	
-	// Make the a object inherit form the b object
+	// Make the A object inherit form the B object
 	var Super = function (){};
 	Super.prototype = b.prototype;
 	a.prototype = new Super();

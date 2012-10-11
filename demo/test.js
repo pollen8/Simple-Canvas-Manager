@@ -12,6 +12,7 @@ window.onload = function() {
 		ball1 = new Scm.Circle(20, 20, 20, "#FF0000", 0)
 		ball2 = new Scm.Circle(78, 250, 30, "#00FF00", 0);
 		ball3 = new Scm.Circle(400, 250, 50, "#00FF00", 0);
+		pixel = new Scm.Pixel(10, 10, "#000000", 0);
 		
 	scm.push(ballLayer);
 	scm.push(bg);
@@ -21,6 +22,7 @@ window.onload = function() {
 	ballLayer.draw(ball1);
 	ballLayer.draw(ball2);
 	ballLayer.draw(ball3);
+	ballLayer.draw(pixel);
 		
 	Scm.Event.on("a", function(){
 		ball.fadeIn();
