@@ -1,0 +1,18 @@
+body {
+	background-color: #eeeeee;
+}
+
+#node{
+	width: 600px;
+	height: 400px;
+	border: 1px solid black;
+	margin-top: 50px;
+	-webkit-box-shadow: 0 10px 43px -6px black;
+	-moz-box-shadow: 0 10px 43px -6px black;
+	box-shadow: 0 10px 43px -6px black;
+}
+
+img {
+	margin-top: 25px;
+}
+

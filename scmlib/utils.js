@@ -24,3 +24,13 @@ Scm.Utils.getValidObject = function(object, def){
 	
 	return ret;
 }
+
+Scm.Utils.extend = function(obj, o) {
+	//super.call(this, x, y, 10, "#FF00FF")
+	//console.log(o);
+	//o.call(obj, o.x, o.y, 10, "#FF00FF");
+
+	Scm.Utils.constructInheritance(obj, Scm.Circle);
+	//Scm.Utils.constructInheritance(obj, o);
+	//Scm.Utils.constructInheritance(fallingBall, Scm.Circle);
+}

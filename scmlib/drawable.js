@@ -15,7 +15,7 @@ var Scm = Scm || {}; // Namespace
 
 var constructEvent = false;
 
-var Drawable = function(x, y, color, alpha) {
+var Drawable = function(x, y, color, alpha) { // TODO type
 	
 	this.x = x;
 	this.y = y;
@@ -199,36 +199,26 @@ Scm.Rect.prototype.draw = function(ctx) {
 * @constructor
 * @param x {Integer} Vertical position.
 * @param y {Integer} Horizontal position.
-* @param diameter {Integer} The circle diameter.
+* @param radius {Integer} The circle's radius.
 * @param color {String} A CSS Color value (like #00FF00).
 * @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Circle = function(x, y, diameter, color, alpha) {
+Scm.Circle = function(x, y, radius, color, alpha) {
 	
 	// inherit from Drawable
 	Drawable.call(this, x, y, color, alpha);
 	
-	this.diameter = diameter;
+	this.radius = radius;
+	this.diameter = radius * 2;
 }
 
 // inherit from Drawable
 Scm.Utils.constructInheritance(Scm.Circle, Drawable);
 
-/**
-* Set the circle diameter.
-*
-* @method setDiameter
-* @param diameter {Integer} New circle's diameter.
-*/
-
-Scm.Circle.prototype.setDiameter = function(diameter) {
-	this.diameter = diameter;
-}
-
-Scm.Circle.prototype.draw = function(ctx, lol) {
+Scm.Circle.prototype.draw = function(ctx) {
 	ctx.beginPath();
-	ctx.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, true);
+	ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
 	ctx.closePath();
 	ctx.fill();
 }

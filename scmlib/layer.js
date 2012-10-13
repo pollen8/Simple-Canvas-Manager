@@ -1,4 +1,12 @@
-// TODO : getALlObjects, undraw, fichier layer ?
+// TODO : undraw
+
+/**
+Provides ScmCore and ScmLayer.
+
+@module Major Objects
+**/
+
+var Scm = Scm || {}; // Namespace
 
 /**
 * Create a layer.<br />
@@ -80,8 +88,11 @@ Scm.Layer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 	var ctx = this.getContext("2d"),
 		img = new Image();
 		
- 	img.src = src;
-	ctx.drawImage(img, 0, 0);
+ 	
+ 	img.onload = function() {
+		ctx.drawImage(img, 0, 0);
+	}
+	img.src = src;
 	this.locked = true;
 }
 
@@ -90,16 +101,23 @@ Scm.Layer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 * Warning : this medthod provides unexpected behavior. 
 * @beta
 * 
-* @method setAlpha
+* @method setGlobalAlpha
 * @param value {Integer} Alpha value : between 0 and 1.
 */
 
-Scm.Layer.prototype.setAlpha = function(value) { // TODO : comportement inattendu
+Scm.Layer.prototype.setGlobalAlpha = function(value) { // TODO : comportement inattendu
 	var ctx = this.getContext("2d");
 	
 	ctx.globalAlpha = value;
 	this.update(ctx);
 }
+
+/**
+* Check if an object exist in this layer.
+* 
+* @method exist
+* @param object {Object} Need a <a href="../modules/Drawable%20Objects.html">drawable object</a>.
+*/
 
 Scm.Layer.prototype.exist = function(object) {
 	
@@ -111,16 +129,43 @@ Scm.Layer.prototype.exist = function(object) {
 }
 
 /**
+* Get all drawn object in this layer.
+* 
+* @method getAllObjects
+* @beta
+* @return {Array} An Array of <a href="../modules/Drawable%20Objects.html">drawable objects</a>.
+*/
+
+Scm.Layer.prototype.getAllObjects = function (type) { // TODO
+
+	// var array = [];
+
+	// type = type || "";
+	// for (var i = 0; i != this.objects.length; i++)
+	// {
+	// 	if (type == "" || typeof(this.objects[i]) == "Scm." + type)
+	// 		array.push(this.objects[i]);
+	// }
+
+	return this.objects;
+	// return array;
+}
+
+/**
 * Draw an SCM drawable object (Circle, Text, Img ...)
 * 
 * @method draw
-* @param drawable {Object} Need a <a href="../modules/Drawable%20Objects.html">drawable object</a>.
+* @param drawable {Object} Need one or more <a href="../modules/Drawable%20Objects.html">drawable object(s)</a>.
 */
 
-Scm.Layer.prototype.draw = function(object) {
+Scm.Layer.prototype.draw = function () { // TODO : test
 	
-	if (!this.exist(object))
-		this.objects.push(object);
+	if (arguments.length == 0)
+		console.error("Scm : You should pass one or more drawable object for the method draw.");
+
+	for (var i = 0; i < arguments.length; ++i)
+		if (!this.exist(arguments[i]))
+			this.objects.push(arguments[i]);
 	
 	// var ctx = this.getContext("2d");
 // 	
@@ -162,7 +207,7 @@ Scm.Layer.prototype.drawAll = function() {
 						object[object.currentEffect.property] = object.currentEffect.limit;
 						
 					object.currentEffect.duration = object.currentEffect.duration - GLOBAL_UPDATE_INTERVAL;
-					if (object.currentEffect.duration == 0) // the effect is finished
+					if (object.currentEffect.duration == 0) // if the effect is finished
 						Scm.Event.fire("effectDone");
 				}
 			
@@ -190,11 +235,11 @@ Scm.Layer.prototype.clear = function() { // TODO : voir pour le locked
 	ctx.clearRect(0, 0, width, height);
 }
 
-Scm.Layer.prototype.getTextConfig = function() {
+Scm.Layer.prototype.getTextConfig = function() { // TODO : doc
 	return {font: this.textFont, size: this.textSize};
 }
 
-Scm.Layer.prototype.setTextConfig = function(font, size) {
+Scm.Layer.prototype.setTextConfig = function(font, size) { // TODO : doc
 	this.textFont = font;
 	this.textSize = size;
 	
@@ -204,7 +249,7 @@ Scm.Layer.prototype.setTextConfig = function(font, size) {
 
 /**
 * Lock the layer.<br />
-* Now, the layer can't be automaticly updated by the ScmCore.
+* Now, the layer can't be automaticly updated by the Scm.Core.
 *
 * @method lock
 */
@@ -215,7 +260,7 @@ Scm.Layer.prototype.lock = function() {
 
 /**
 * Unlock the layer.<br />
-* Now, the layer can be automaticly updated by the ScmCore.
+* Now, the layer can be automaticly updated by the Scm.Core.
 *
 * @method unlock
 */

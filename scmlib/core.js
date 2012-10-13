@@ -34,8 +34,8 @@ Scm.Core = function(node, updateInterval){
 		this.height = this.node.clientHeight;
 		this.content = document.getElementById("scmContent");
 		this.layers = [];
-		this.updateInterval = updateInterval || 10;
-		GLOBAL_UPDATE_INTERVAL = this.updateInterval;
+		GLOBAL_UPDATE_INTERVAL = updateInterval || 10;
+		//GLOBAL_UPDATE_INTERVAL = this.updateInterval;
 
 		// ensure that bind is available
 		if (!('bind' in Function.prototype)) {
@@ -52,7 +52,7 @@ Scm.Core = function(node, updateInterval){
 		}
 
 		// run updateLoop
-		window.setInterval(this.update.bind(this), this.updateInterval);
+		window.setInterval(this.update.bind(this), GLOBAL_UPDATE_INTERVAL);
 	}	
 	else
 		console.error("SCM : #" + node + " doesn't exist !");
@@ -112,4 +112,6 @@ Scm.Core.prototype.update = function() {
 	// Draw all objects
 	for (var i = 0; i != this.layers.length; i++)
 		this.layers[i].drawAll();
+
+	Scm.Event.fire("coreUpdate"); // fire an coreUpdate event
 }
