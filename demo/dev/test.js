@@ -1,18 +1,17 @@
 window.onload = function() {
-	
+
 	var scm = new Scm.Core("node"),
 		one = new Scm.Layer("one", 2), // TODO auto z-index
 		bg = new Scm.Layer("bg", 1);
 
 	scm.push(one); // TODO multiple layer && auto z-index
 	scm.push(bg);
-	
-	bg.setBackgroundColor("#0000FF");
+
+	bg.setBackgroundImg("bg.gif");
+	//var  i = 0;
 
 	Scm.Event.on("click", function(e) {
-
-		var test = new fallingBall(e.x, e.y);
-		one.draw(test);
+		one.draw(new fallingBall(e.x, e.y));
 	});
 
 	Scm.Event.on("coreUpdate", function(e) {
@@ -29,7 +28,11 @@ window.onload = function() {
 				all[i].cycle++;
 			}
 			else
+			{
 				all[i].y = scm.height - all[i].radius;
+				all[i].fadeOut(2000);
+				//one.erase(all[i]);
+			}
 		}
 	});
 }
@@ -37,7 +40,7 @@ window.onload = function() {
 var fallingBall = function(x, y) {
 	
 	this.cycle = 0;
-	Scm.Circle.call(this, x, y, 10, "#FF00FF", 0.9); // call the Circle constructor
+	Scm.Circle.call(this, x, y, 15, "#279bd6", 0.75); // call the Circle constructor
 }
 
 Scm.Utils.constructInheritance(fallingBall, Scm.Circle); // say that fallingBall inherit of Scm.Circle

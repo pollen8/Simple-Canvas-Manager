@@ -1,44 +1,36 @@
+var scm = new Scm.Core("node"),
+	one = new Scm.Layer("one", 2),
+	bg = new Scm.Layer("bg", 1);
 
-/*
- * This is a test file
- */
+scm.push(one);
+scm.push(bg);
 
-window.onload = function() {
-	
-	var scm = new Scm.Core("node"),
-		one = new Scm.Layer("one", 2), // TODO auto z-index
-		bg = new Scm.Layer("bg", 1);
+bg.setBackgroundImg("fallingBalls/bg.gif");
 
-	scm.push(one); // TODO multiple layer && auto z-index
-	scm.push(bg);
-	
-	bg.setBackgroundImg("bg.gif");
-	//var  i = 0;
+Scm.Event.on("click", function(e) {
+	one.draw(new fallingBall(e.x, e.y));
+});
 
-	Scm.Event.on("click", function(e) {
+Scm.Event.on("coreUpdate", function(e) {
+	var all = one.getAllObjects(),
+		testPos;
 
-		var test = new fallingBall(e.x, e.y);
-		one.draw(test);
-	});
+	for (var i = 0; i != all.length; i++)
+	{
+		testPos = all[i].y + all[i].radius + (1 * (all[i].cycle / 10));
 
-	Scm.Event.on("coreUpdate", function(e) {
-		var all = one.getAllObjects(), // TODO filter "WHERE field = something"
-			testPos;
-
-		for (var i = 0; i != all.length; i++)
+		if (testPos <= scm.height)
 		{
-			testPos = all[i].y + all[i].radius + (1 * (all[i].cycle / 10));
-
-			if (testPos <= scm.height)
-			{
-				all[i].y = testPos - all[i].radius;
-				all[i].cycle++;
-			}
-			else
-				all[i].y = scm.height - all[i].radius;
+			all[i].y = testPos - all[i].radius;
+			all[i].cycle++;
 		}
-	});
-}
+		else
+		{
+			all[i].y = scm.height - all[i].radius;
+			all[i].fadeOut(2000);
+		}
+	}
+});
 
 var fallingBall = function(x, y) {
 	

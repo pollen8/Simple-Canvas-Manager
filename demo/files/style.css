@@ -1,0 +1,39 @@
+body {
+	background-color: #eeeeee;
+	-khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#node {
+	width: 600px;
+	height: 400px;
+	margin-top: 45px;
+	-webkit-box-shadow: 0 10px 43px -6px black;
+	-moz-box-shadow: 0 10px 43px -6px black;
+	box-shadow: 0 10px 43px -6px black;
+}
+
+img {
+	margin-top: 40px;
+}
+
+.btn {
+	margin-top: 55px;
+	margin-right: 7px;
+}
+
+#demo {
+	display: none;
+}
+
+#codeView {
+	display: none;
+}
+
+#myModal {
+	display: none;
+}
+

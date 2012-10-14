@@ -19,7 +19,7 @@ soon
 Why SCM is powerfull ?
 ----------------------
 
-Assuming a simple example (live demo <a href="http://myboon.github.com/Simple-Canvas-Manager/demo/">here</a>).<br />
+Assuming a simple example (live demo <a href="http://scm-library.olympe.in/demo/?demo=whyScmIsPowerfull">here</a>).<br />
 This is how you can implement it with native javascript code :
 
 ```js
@@ -37,12 +37,12 @@ window.onload = function() {
 		ballCtx.clearRect(0, 0, ballCtx.canvas.clientWidth, ballCtx.canvas.clientHeight);
 		
 		// draw background
-		bgCtx.fillStyle = "#0000FF";
+		bgCtx.fillStyle = "#4cb7ee";
 		bgCtx.fillRect(0, 0, bgCtx.canvas.clientWidth, bgCtx.canvas.clientHeight);
 	
 		// draw ball
 		ballCtx.beginPath();
-		ballCtx.fillStyle = "#FF0000";
+		ballCtx.fillStyle = "#ff5a18";
 		ballCtx.arc(ballx, bally, 20, 0, Math.PI * 2, true);
 		ballCtx.closePath();
 		ballCtx.fill();
@@ -73,12 +73,12 @@ window.onload = function() {
 	var scm = new Scm.Core("node"),
 		ballLayer = new Scm.Layer("ball", 2),
 		bg = new Scm.Layer("bg", 1),
-		ball = new Scm.Circle(200, 200, 20, "#FF0000");
+		ball = new Scm.Circle(200, 200, 20, "#ff5a18");
 		
 	scm.push(ballLayer);
 	scm.push(bg);
 	
-	bg.setBackgroundColor("#0000FF");
+	bg.setBackgroundColor("#4cb7ee");
 	ballLayer.draw(ball);
 	
 	Scm.Event.on("up_arrow", function(){

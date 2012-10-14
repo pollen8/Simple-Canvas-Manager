@@ -184,6 +184,22 @@ Scm.Layer.prototype.draw = function () { // TODO : test
 		// ctx.restore();
 }
 
+Scm.Layer.prototype.erase = function (object) { // BETA
+
+	var found = false;
+
+	for (var i = 0; i != this.objects.length; i++)
+		if (this.objects[i] == object)
+		{
+			console.log(this.objects.slice(i, 1));
+			this.objects = this.objects.slice(i, 1);
+			found = true;
+		}
+			
+	if (!found)
+		console.error("Scm : Undefined reference to object.");
+} 
+
 Scm.Layer.prototype.drawAll = function() {
 
 	var ctx = this.getContext("2d"),
