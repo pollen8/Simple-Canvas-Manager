@@ -18,7 +18,6 @@ Scm.Event.on("coreUpdate", function(e) {
 	for (var i = 0; i != all.length; i++)
 	{
 		testPos = all[i].y + all[i].radius + (1 * (all[i].cycle / 10));
-
 		if (testPos <= scm.height)
 		{
 			all[i].y = testPos - all[i].radius;
