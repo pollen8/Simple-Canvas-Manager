@@ -81,7 +81,7 @@ Scm.Event.on = function(type, callback) {
 				ret.y = e.offsetY + 1;
 			}
 			else
-				ret = e;	
+				ret = e.detail;
 			callback(ret);
 			
 		}, true);
@@ -97,11 +97,11 @@ Scm.Event.on = function(type, callback) {
 * @param name {String} Event name.
 */
 
-Scm.Event.fire = function(name) { // TODO pass object
+Scm.Event.fire = function(name, obj) {
 	
-    var newEvent = document.createEvent('Events');
+    var newEvent = document.createEvent('CustomEvent');
     
-    newEvent.initEvent(name, true, false);
+    newEvent.initCustomEvent(name, true, true, obj);
     document.getElementById(Scm.Event.scmNode).dispatchEvent(newEvent);
 }
 

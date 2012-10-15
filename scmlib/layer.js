@@ -97,6 +97,69 @@ Scm.Layer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
 }
 
 /**
+*
+* @beta
+* @method setParallaxScrolling
+*/
+
+Scm.Layer.prototype.setParallaxScrolling = function() {
+
+	var directions = {
+		"left": {property: "x", variation: -1},
+		"up": {property: "y", variation: -1},
+		"right": {property: "x", variation: 1},
+		"down": {property: "y", variation: 1},
+	}
+
+	if (arguments.length < 4)
+		console.error("Scm : setParallaxScrolling needs at least 3 arguments.");
+	else if (typeof(directions[arguments[0]]) == "undefined")
+		console.error("Scm : setParallaxScrolling : Undefined reference to this direction");
+	else
+	{
+		// define some usefull variable
+		var nbSlides = 0,
+			property = directions[arguments[0]].property,
+			variation = arguments[1] * directions[arguments[0]].variation,
+			width = GLOBAL_SCM_WIDTH * directions[arguments[0]].variation,
+			height = GLOBAL_SCM_HEIGHT * directions[arguments[0]].variation,
+			finalState = 0,
+			date = new Date();
+
+		for (var i = 2; i != arguments.length; i++)
+		{
+			var slide;
+			if (arguments[0] == "left" || arguments[0] == "right")
+			{
+				slide = new Scm.Image(arguments[i], (i - 2) * -width, 0);
+				finalState = width;
+			}
+			else
+			{
+				slide = new Scm.Image(arguments[i], 0, (i - 2) * -height);
+				finalState = height;
+			}
+			
+			// when a slide is finished an PSDone event is fired
+			console.log("PSDone" + date.getTime());
+			slide.createCustomEffect(property, variation, finalState, "PSDone" + date.getTime());
+			this.draw(slide);
+			nbSlides++;
+		}
+
+		// reset the finished slide at the good place to make a perfect loop
+		console.log(date.getTime());
+		Scm.Event.on("PSDone" + date.getTime(), function(e) {
+			if (e.currentEffect.property == "y")
+				e.y = (nbSlides - 1) * -height;
+			else if (e.currentEffect.property == "x")
+				e.x = (nbSlides - 1) * -width;
+			e.createCustomEffect(property, variation, finalState, "PSDone" + date.getTime());
+		});
+	}
+}
+
+/**
 * Set the layer's global Alpa.<br />
 * Warning : this medthod provides unexpected behavior. 
 * @beta
@@ -224,7 +287,7 @@ Scm.Layer.prototype.drawAll = function() {
 						
 					object.currentEffect.duration = object.currentEffect.duration - GLOBAL_UPDATE_INTERVAL;
 					if (object.currentEffect.duration == 0) // if the effect is finished
-						Scm.Event.fire("effectDone");
+						Scm.Event.fire(object.currentEffect.fireEventName, object);
 				}
 			
 			if (object.color) 

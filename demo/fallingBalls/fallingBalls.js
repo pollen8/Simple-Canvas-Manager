@@ -34,7 +34,10 @@ Scm.Event.on("coreUpdate", function(e) {
 var fallingBall = function(x, y) {
 	
 	this.cycle = 0;
-	Scm.Circle.call(this, x, y, 15, "#279bd6", 0.75); // call the Circle constructor
+	
+	// call the Circle constructor
+	Scm.Circle.call(this, x, y, 15, "#279bd6", 0.75); 
 }
 
-Scm.Utils.constructInheritance(fallingBall, Scm.Circle); // say that fallingBall inherit of Scm.Circle
+// now fallingBall inherit of Scm.Circle
+Scm.Utils.constructInheritance(fallingBall, Scm.Circle); 

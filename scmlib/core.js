@@ -16,7 +16,9 @@ var Scm = Scm || {}; // Namespace
 * @param [updateInterval=10] {Integer} Update intervals (in milliseconds).
 */
 
-var GLOBAL_UPDATE_INTERVAL = 10;
+var GLOBAL_UPDATE_INTERVAL = 10,
+	GLOBAL_SCM_WIDTH = 0,
+	GLOBAL_SCM_HEIGHT = 0;
 
 Scm.Core = function(node, updateInterval){
 	
@@ -35,6 +37,8 @@ Scm.Core = function(node, updateInterval){
 		this.content = document.getElementById("scmContent");
 		this.layers = [];
 		GLOBAL_UPDATE_INTERVAL = updateInterval || 10;
+		GLOBAL_SCM_WIDTH = this.width;
+		GLOBAL_SCM_HEIGHT = this.height;
 		//GLOBAL_UPDATE_INTERVAL = this.updateInterval;
 
 		// ensure that bind is available

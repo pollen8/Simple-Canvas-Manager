@@ -26,6 +26,7 @@ var Drawable = function(x, y, color, alpha) { // TODO type
 		property: null,
 		variation: 0,
 		limit: 0,
+		fireEventName: null,
 	};
 	
 	// construct all Drawable Events
@@ -39,6 +40,7 @@ var Drawable = function(x, y, color, alpha) { // TODO type
 				property: null,
 				variation: 0,
 				limit: 0,
+				fireEventName: null,
 			};
 		});
 		constructEvent = true;
@@ -91,6 +93,7 @@ Drawable.prototype.fadeIn = function(duration) {
 		property: "alpha",
 		variation: ((1 - this.alpha) / (duration / GLOBAL_UPDATE_INTERVAL)),
 		limit: 1,
+		fireEventName: "effectDone",
 	};
 }
 
@@ -105,7 +108,40 @@ Drawable.prototype.fadeOut = function(duration) {
 		property: "alpha",
 		variation: -((this.alpha - 0) / (duration / GLOBAL_UPDATE_INTERVAL)),
 		limit: 0,
+		fireEventName: "effectDone",
 	};
+}
+
+Drawable.prototype.createCustomEffect = function(property, variation, finalState, eventName) {
+
+	//check if the effect is possible
+	var step1 = Math.abs(finalState - this[property]),
+		step2 = Math.abs(finalState - (this[property] + variation)),
+		duration;
+
+	eventName = eventName || "effectDone";
+
+	if (step2 >= step1)
+	{
+		console.log(property, variation, finalState);
+		console.log("Scm : invalid customEffect (never ends)");
+	}
+	else
+	{
+		if (finalState < this[property])
+			duration = Math.abs((this[property] - finalState) / variation) * GLOBAL_UPDATE_INTERVAL;
+		else
+			duration = Math.abs((finalState - this[property]) / variation) * GLOBAL_UPDATE_INTERVAL;
+
+		// create effect
+		this.currentEffect = {
+			duration: duration,
+			property: property,
+			variation: variation,
+			limit: finalState,
+			fireEventName: eventName,
+		};
+	}
 }
 
 Drawable.prototype.hide = function() {

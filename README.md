@@ -92,4 +92,4 @@ window.onload = function() {
 	});
 }
 ```
-Simple Canvas Manager allows you to create quickly and intuitively Html5 canvas applications. Just Try it !!! 
+Simple Canvas Manager allows you to create quickly and intuitively Html5 canvas applications. Just Try it ! 
