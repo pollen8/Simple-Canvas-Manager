@@ -6,8 +6,6 @@ Provides ScmCore and ScmLayer.
 @module Major Objects
 **/
 
-var Scm = Scm || {}; // Namespace
-
 /**
 * Create a layer.<br />
 * ScmLayer are unlimited and can be stacked on top / bottom of another.
@@ -31,7 +29,7 @@ Scm.Layer = function (name, zindex, locked) {
 	// Text Config
 	this.textFont = "sans-serif";
 	this.textSize = 10;
-}
+};
 
 /**
 * Return the html element of the layer. <br />

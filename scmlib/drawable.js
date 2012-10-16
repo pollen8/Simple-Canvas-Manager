@@ -4,8 +4,6 @@ Provides some drawable objects.
 @module Drawable Objects
 **/
 
-var Scm = Scm || {}; // Namespace
-
 /**
 * This is the Drawable object.
 * All Class in this module should inherit of this object !
@@ -45,7 +43,7 @@ var Drawable = function(x, y, color, alpha) { // TODO type
 		});
 		constructEvent = true;
 	}
-}
+};
 
 /**
 * Set horizontal and vertical position.

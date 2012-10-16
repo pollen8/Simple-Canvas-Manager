@@ -4,8 +4,6 @@ Provides ScmCore and ScmLayer.
 @module Major Objects
 **/
 
-var Scm = Scm || {}; // Namespace
-
 /**
 * Create an instance of the SCM lib.
 *
@@ -60,7 +58,7 @@ Scm.Core = function(node, updateInterval){
 	}	
 	else
 		console.error("SCM : #" + node + " doesn't exist !");
-}
+};
 
 /**
 * Push a layer in the Scm.Core.

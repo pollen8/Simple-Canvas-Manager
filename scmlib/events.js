@@ -4,8 +4,6 @@ Provides some keyboard events for Scm
 @module Events
 **/
 
-var Scm = Scm || {}; // Namespace
-
 /**
 * Create a ScmEvent <br />
 * There is no need to construct a ScmEvent. You can simply use the Scm.Core field called : events.
