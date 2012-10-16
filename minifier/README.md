@@ -1,6 +1,7 @@
 ## Installation
 
-1) Download and install Node.js
+1) Download and install Node.js<br />
+2) Run :
 
 ```bash
 npm install node-minify && node minifier.js

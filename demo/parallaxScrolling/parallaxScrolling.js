@@ -9,7 +9,9 @@ scm.push(psM);
 scm.push(psB);
 scm.push(ship);
 
-bg.setBackgroundImg("parallaxScrolling/bg.jpg");
-psB.setParallaxScrolling("left", 5, "parallaxScrolling/psBig1.png", "parallaxScrolling/psBig2.png", "parallaxScrolling/psBig3.png");
-psM.setParallaxScrolling("left", 3, "parallaxScrolling/psMid1.png", "parallaxScrolling/psMid2.png", "parallaxScrolling/psMid3.png");
-ship.draw(new Scm.Image("parallaxScrolling/ship.gif", 200, 180));
+var path = "parallaxScrolling/misc/";
+
+bg.setBackgroundImg(path+"bg.jpg");
+psB.setParallaxScrolling("left", 5, path+"psBig1.png", path+"psBig2.png", path+"psBig3.png");
+psM.setParallaxScrolling("left", 3, path+"psMid1.png", path+"psMid2.png", path+"psMid3.png");
+ship.draw(new Scm.Image(path+"ship.gif", 200, 180));

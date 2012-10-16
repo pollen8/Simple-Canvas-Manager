@@ -5,7 +5,7 @@ var scm = new Scm.Core("node"),
 scm.push(one);
 scm.push(bg);
 
-bg.setBackgroundImg("fallingBalls/bg.gif");
+bg.setBackgroundImg("fallingBalls/misc/bg.gif");
 
 Scm.Event.on("click", function(e) {
 	one.draw(new fallingBall(e.x, e.y));
