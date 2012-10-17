@@ -19,7 +19,7 @@ soon
 Why SCM is powerfull ?
 ----------------------
 
-Assuming a simple example (live demo <a href="http://scm-library.olympe.in/demo/?demo=whyScmIsPowerfull">here</a>).<br />
+Assuming a simple example (live demo <a href="http://scm-library.olympe.in/demo/?demo=readmeDemo">here</a>).<br />
 This is how you can implement it with native javascript code :
 
 ```js

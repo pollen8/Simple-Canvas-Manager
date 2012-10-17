@@ -37,7 +37,6 @@ Scm.Core = function(node, updateInterval){
 		GLOBAL_UPDATE_INTERVAL = updateInterval || 10;
 		GLOBAL_SCM_WIDTH = this.width;
 		GLOBAL_SCM_HEIGHT = this.height;
-		//GLOBAL_UPDATE_INTERVAL = this.updateInterval;
 
 		// ensure that bind is available
 		if (!('bind' in Function.prototype)) {
@@ -64,19 +63,34 @@ Scm.Core = function(node, updateInterval){
 * Push a layer in the Scm.Core.
 *
 * @method push
-* @param obj {Object} An Scm.Layer object
+* @param obj {Object} One Scm.Layer object at least
 */
 
-Scm.Core.prototype.push = function(obj) { // TODO : verifier qu'il n'existe pas
+Scm.Core.prototype.push = function() { // TODO : verifier qu'il n'existe pas
 	
-	var canvas = document.createElement('canvas');
+	var canvas, obj, elementNumber;
 	
-	canvas.setAttribute("id", "scm" + obj.name.charAt(0).toUpperCase() + obj.name.slice(1));
-	canvas.setAttribute("width", this.width);
-	canvas.setAttribute("height", this.height);
-	canvas.setAttribute("style", "z-index: " + obj.zindex + "; position: absolute;");
-	this.content.appendChild(canvas);
-	this.layers.push(obj);
+	if (arguments.length == 0)
+		console.error("Scm : push needs at least 1 argument.");
+	else
+	{
+		for (var i = 0; i != arguments.length; i++)
+		{
+			obj = arguments[i];
+			elementNumber = ((this.layers.length > 0) ? (this.layers.length + 1) : (i + 1));
+			canvas = document.createElement('canvas');
+			canvas.setAttribute("id", "scmLayer" + elementNumber);
+
+			// set the htmlName for the new Layer
+			arguments[i].htmlName += elementNumber;
+
+			canvas.setAttribute("width", this.width);
+			canvas.setAttribute("height", this.height);
+			canvas.setAttribute("style", "z-index: " + elementNumber + "; position: absolute;");
+			this.content.appendChild(canvas);
+			this.layers.push(obj);
+		}
+	}
 }
 
 /**
@@ -113,7 +127,8 @@ Scm.Core.prototype.update = function() {
 			
 	// Draw all objects
 	for (var i = 0; i != this.layers.length; i++)
-		this.layers[i].drawAll();
+		if (!this.layers[i].locked)
+			this.layers[i].drawAll();
 
 	Scm.Event.fire("coreUpdate"); // fire an coreUpdate event
 }

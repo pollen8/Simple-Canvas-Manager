@@ -78,8 +78,15 @@ Scm.Event.on = function(type, callback) {
 				ret.x = e.offsetX + 1;
 				ret.y = e.offsetY + 1;
 			}
+			else if (typeof(e.layerX) != "undefined" &&
+					 typeof(e.layerY) != "undefined") // firefox
+			{
+				ret.x = e.layerX;
+				ret.y = e.layerY;
+			}
 			else
 				ret = e.detail;
+
 			callback(ret);
 			
 		}, true);

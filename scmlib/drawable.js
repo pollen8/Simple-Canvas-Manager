@@ -25,6 +25,7 @@ var Drawable = function(x, y, color, alpha) { // TODO type
 		variation: 0,
 		limit: 0,
 		fireEventName: null,
+		callback: null
 	};
 	
 	// construct all Drawable Events
@@ -39,6 +40,7 @@ var Drawable = function(x, y, color, alpha) { // TODO type
 				variation: 0,
 				limit: 0,
 				fireEventName: null,
+				callback: null
 			};
 		});
 		constructEvent = true;
@@ -80,7 +82,7 @@ Drawable.prototype.setAlpha = function(value) {
 	this.alpha = value;
 }
 
-Drawable.prototype.fadeIn = function(duration) {
+Drawable.prototype.fadeIn = function(duration, callback) {
 
 	duration = duration || GLOBAL_UPDATE_INTERVAL;
 	if (duration < GLOBAL_UPDATE_INTERVAL)
@@ -92,10 +94,11 @@ Drawable.prototype.fadeIn = function(duration) {
 		variation: ((1 - this.alpha) / (duration / GLOBAL_UPDATE_INTERVAL)),
 		limit: 1,
 		fireEventName: "effectDone",
+		callback: callback
 	};
 }
 
-Drawable.prototype.fadeOut = function(duration) {
+Drawable.prototype.fadeOut = function(duration, callback) {
 
 	duration = duration || GLOBAL_UPDATE_INTERVAL;
 	if (duration < GLOBAL_UPDATE_INTERVAL)
@@ -107,10 +110,11 @@ Drawable.prototype.fadeOut = function(duration) {
 		variation: -((this.alpha - 0) / (duration / GLOBAL_UPDATE_INTERVAL)),
 		limit: 0,
 		fireEventName: "effectDone",
+		callback: callback
 	};
 }
 
-Drawable.prototype.createCustomEffect = function(property, variation, finalState, eventName) {
+Drawable.prototype.createCustomEffect = function(property, variation, finalState, callback, eventName) {
 
 	//check if the effect is possible
 	var step1 = Math.abs(finalState - this[property]),
@@ -120,10 +124,7 @@ Drawable.prototype.createCustomEffect = function(property, variation, finalState
 	eventName = eventName || "effectDone";
 
 	if (step2 >= step1)
-	{
-		console.log(property, variation, finalState);
-		console.log("Scm : invalid customEffect (never ends)");
-	}
+		console.error("Scm : invalid customEffect (never ends)");
 	else
 	{
 		if (finalState < this[property])
@@ -131,13 +132,17 @@ Drawable.prototype.createCustomEffect = function(property, variation, finalState
 		else
 			duration = Math.abs((finalState - this[property]) / variation) * GLOBAL_UPDATE_INTERVAL;
 
-		// create effect
+		// duration should be a multiplicator of GLOBAL_UPDATE_INTERVAL
+		if (duration % GLOBAL_UPDATE_INTERVAL != 0)
+			duration = Math.ceil((duration / GLOBAL_UPDATE_INTERVAL)) * GLOBAL_UPDATE_INTERVAL;
+
 		this.currentEffect = {
 			duration: duration,
 			property: property,
 			variation: variation,
 			limit: finalState,
 			fireEventName: eventName,
+			callback: callback
 		};
 	}
 }

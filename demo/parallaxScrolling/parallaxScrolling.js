@@ -1,13 +1,10 @@
 var scm = new Scm.Core("node"),
-	bg = new Scm.Layer("bg", 1),
-	psM = new Scm.Layer("two", 3),
-	ship = new Scm.Layer("ship", 4),
-	psB = new Scm.Layer("three", 5);
+	bg = new Scm.Layer(),
+	psM = new Scm.Layer(),
+	ship = new Scm.Layer(),
+	psB = new Scm.Layer();
 
-scm.push(bg);
-scm.push(psM);
-scm.push(psB);
-scm.push(ship);
+scm.push(bg, psM, ship, psB);
 
 var path = "parallaxScrolling/misc/";
 

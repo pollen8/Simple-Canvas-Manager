@@ -1,9 +1,8 @@
 var scm = new Scm.Core("node"),
-	one = new Scm.Layer("one", 2),
-	bg = new Scm.Layer("bg", 1);
+	one = new Scm.Layer(),
+	bg = new Scm.Layer();
 
-scm.push(one);
-scm.push(bg);
+scm.push(bg, one);
 
 bg.setBackgroundImg("fallingBalls/misc/bg.gif");
 

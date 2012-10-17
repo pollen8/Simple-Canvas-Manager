@@ -18,11 +18,9 @@ Provides ScmCore and ScmLayer.
 * @param [locked=false] {Boolean} Is the layer is locked ? If true, the layer can't be automaticly updated by the ScmCore.
 */
 
-Scm.Layer = function (name, zindex, locked) {
+Scm.Layer = function (locked) {
 	
-	this.name = name;
-	this.zindex = zindex;
-	this.htmlName = "scm" + name.charAt(0).toUpperCase() + name.slice(1);
+	this.htmlName = "scmLayer";
 	this.locked = locked || false;
 	this.objects = [];
 	
@@ -140,7 +138,7 @@ Scm.Layer.prototype.setParallaxScrolling = function() {
 			
 			// when a slide is finished an PSDone event is fired
 			console.log("PSDone" + date.getTime());
-			slide.createCustomEffect(property, variation, finalState, "PSDone" + date.getTime());
+			slide.createCustomEffect(property, variation, finalState, null, "PSDone" + date.getTime());
 			this.draw(slide);
 			nbSlides++;
 		}
@@ -152,7 +150,7 @@ Scm.Layer.prototype.setParallaxScrolling = function() {
 				e.y = (nbSlides - 1) * -height;
 			else if (e.currentEffect.property == "x")
 				e.x = (nbSlides - 1) * -width;
-			e.createCustomEffect(property, variation, finalState, "PSDone" + date.getTime());
+			e.createCustomEffect(property, variation, finalState, null, "PSDone" + date.getTime());
 		});
 	}
 }
@@ -285,7 +283,11 @@ Scm.Layer.prototype.drawAll = function() {
 						
 					object.currentEffect.duration = object.currentEffect.duration - GLOBAL_UPDATE_INTERVAL;
 					if (object.currentEffect.duration == 0) // if the effect is finished
-						Scm.Event.fire(object.currentEffect.fireEventName, object);
+					{
+						Scm.Event.fire(object.currentEffect.fireEventName, object); // fire an event (if defined)
+						if (typeof(object.currentEffect.callback) != "undefined" && object.currentEffect.callback != null)
+							(object.currentEffect.callback)(object); // call the callback (if defined)
+					}
 				}
 			
 			if (object.color) 

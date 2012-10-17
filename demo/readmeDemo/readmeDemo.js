@@ -1,10 +1,9 @@
 var scm = new Scm.Core("node"),
-    ballLayer = new Scm.Layer("ball", 2),
-    bg = new Scm.Layer("bg", 1),
+    ballLayer = new Scm.Layer(),
+    bg = new Scm.Layer(),
     ball = new Scm.Circle(200, 200, 20, "#ff5a18");
 
-scm.push(ballLayer);
-scm.push(bg);
+scm.push(bg, ballLayer);
 
 bg.setBackgroundColor("#4cb7ee");
 ballLayer.draw(ball);
