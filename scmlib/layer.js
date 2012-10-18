@@ -137,14 +137,12 @@ Scm.Layer.prototype.setParallaxScrolling = function() {
 			}
 			
 			// when a slide is finished an PSDone event is fired
-			console.log("PSDone" + date.getTime());
 			slide.createCustomEffect(property, variation, finalState, null, "PSDone" + date.getTime());
 			this.draw(slide);
 			nbSlides++;
 		}
 
 		// reset the finished slide at the good place to make a perfect loop
-		console.log(date.getTime());
 		Scm.Event.on("PSDone" + date.getTime(), function(e) {
 			if (e.currentEffect.property == "y")
 				e.y = (nbSlides - 1) * -height;

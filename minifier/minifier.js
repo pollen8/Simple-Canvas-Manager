@@ -7,10 +7,11 @@ var getSize = function(fileName) {
 var compressor = require('node-minify'),
 	fs = require('fs'),
 	util = require('util'),
-	oSize = getSize("../scmlib.min.js"),
-	build, version = "0.0.2";
+	minFile = "../scmlib/scmlib.min.js",
+	oSize = getSize(minFile),
+	build, version = "0.2.0";
 
-fs.readFile("../scmlib.min.js", function(err, data){
+fs.readFile(minFile, function(err, data){
 	data = data.toString();
 	data = data.split("\n")[1];
 
@@ -24,11 +25,11 @@ fs.readFile("../scmlib.min.js", function(err, data){
 	new compressor.minify({
 	    type: 'yui-js',
 	    fileIn: ['../scmlib/utils.js', '../scmlib/core.js', '../scmlib/layer.js', '../scmlib/events.js', '../scmlib/drawable.js'],
-	    fileOut: '../scmlib.min.js',
+	    fileOut: minFile,
 	    callback: function(err){
-			  fs.appendFileSync("../scmlib.min.js", "\n/*! Simple Canvas Manager " + version + " | build " + formatBuild(build) + " | " + date.toDateString() + " */");
+			  fs.appendFileSync(minFile, "\n/*! Simple Canvas Manager " + version + " | build " + formatBuild(build) + " | " + date.toDateString() + " */");
 			  console.log("\nDone !\n\nInformations :\n--------------\n\nVersion : " + version
-			  		+ "\n" + "Build : " + formatBuild(build) + "\nSize : " + oSize + " => " + getSize("../scmlib.min.js"));
+			  		+ "\n" + "Build : " + formatBuild(build) + "\nSize : " + oSize + " => " + getSize(minFile));
 	    }
 	});
 });

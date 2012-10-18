@@ -68,6 +68,7 @@ Scm.Event.on = function(type, callback) {
 
 	if (!found) //Javascript Event
 	{
+
 		document.getElementById(Scm.Event.scmNode).addEventListener(type, function(e){
 			
 			var ret = {x: 0, y: 0};
@@ -105,11 +106,9 @@ Scm.Event.on = function(type, callback) {
 Scm.Event.fire = function(name, obj) {
 	
     var newEvent = document.createEvent('CustomEvent');
-    
+
     newEvent.initCustomEvent(name, true, true, obj);
     document.getElementById(Scm.Event.scmNode).dispatchEvent(newEvent);
 }
 
 Scm.Event.init("scmContent");
-
-//Scm.Event.init();

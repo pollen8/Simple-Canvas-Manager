@@ -1,10 +1,10 @@
 {
     "name": "Simple Canvas Manager Librairy",
     "description": "Simple Canvas Manager (SCM) is a javascript library that offers you methods to work easy with the HTML5 canvas element.",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "url": "https://github.com/MyBoon/Simple-Canvas-Manager",
-    "logo": "http://i.imgur.com/XXyOd.png",
+    "logo": "http://scm-library.olympe.in/logo_doc.png",
     "options": {
-        "outdir": "doc"
+        "outdir": "./www"
     }
 }

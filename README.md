@@ -7,7 +7,12 @@ Local Documentation
 
 1) Download and install Node.js<br />
 2) Run npm -g install yuidocjs.<br />
-3) Run yuidoc . at the top of SCM source tree.<br /><br />
+3) Run at the top of SCM source tree :
+
+```bash
+	cd doc && yuidoc ../
+```
+
 <a target="_blank" href="http://yui.github.com/yuidoc/"><I>More informations</I></a>
 
 Online Documentation
@@ -71,12 +76,11 @@ Now, this how you can implement it with SCM :
 window.onload = function() {
 	
 	var scm = new Scm.Core("node"),
-		ballLayer = new Scm.Layer("ball", 2),
-		bg = new Scm.Layer("bg", 1),
+		ballLayer = new Scm.Layer(),
+		bg = new Scm.Layer(),
 		ball = new Scm.Circle(200, 200, 20, "#ff5a18");
 		
-	scm.push(ballLayer);
-	scm.push(bg);
+	scm.push(bg, ballLayer);
 	
 	bg.setBackgroundColor("#4cb7ee");
 	ballLayer.draw(ball);
