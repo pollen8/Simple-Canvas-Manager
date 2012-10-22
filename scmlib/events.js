@@ -68,7 +68,14 @@ Scm.Event.on = function(type, callback) {
 
 	if (!found) //Javascript Event
 	{
+		// Because SCM has an intern double buffer system
+		// We need to redefine the click event as a mouseup event.
+		// The click event will occur after the mousedown and mouseup events.
+		// When the SCM buffers change, it's possible that mousedown and mouseup are happening on different DOM elements.
+		// and the click event has an unexpected behavior.
 
+		type = ((type == "click") ? ("mouseup") : (type));
+		
 		document.getElementById(Scm.Event.scmNode).addEventListener(type, function(e){
 			
 			var ret = {x: 0, y: 0};

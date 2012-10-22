@@ -22,18 +22,18 @@ Scm.Core = function(node, updateInterval){
 	
 	if ((this.node = document.getElementById(node)))
 	{
-		var scmContent = document.createElement('div');
-		
-		scmContent.setAttribute("id", "scmContent");
-		scmContent.setAttribute("width", this.node.clientWidth);
-		scmContent.setAttribute("height", this.node.clientHeight);
-		scmContent.setAttribute("style", "position: absolute;");
-		this.node.appendChild(scmContent);
+		var style = "position: absolute;";
+		Scm.Utils.createDomElement("div", node, "scmContent", this.node.clientWidth, this.node.clientHeight, style);
+
+		style += " display: block;";
+		Scm.Utils.createDomElement("div", "scmContent", "a", this.node.clientWidth, this.node.clientHeight, style); // first buffer
+		Scm.Utils.createDomElement("div", "scmContent", "b", this.node.clientWidth, this.node.clientHeight, style, false); // second buffer
 		
 		this.width = this.node.clientWidth;
 		this.height = this.node.clientHeight;
-		this.content = document.getElementById("scmContent");
 		this.layers = [];
+		this.displayedBuffer = "a";
+		this.hiddenBuffer = "b";
 		GLOBAL_UPDATE_INTERVAL = updateInterval || 10;
 		GLOBAL_SCM_WIDTH = this.width;
 		GLOBAL_SCM_HEIGHT = this.height;
@@ -68,7 +68,7 @@ Scm.Core = function(node, updateInterval){
 
 Scm.Core.prototype.push = function() { // TODO : verifier qu'il n'existe pas
 	
-	var canvas, obj, elementNumber;
+	var canvas, obj, elementNumber, style;
 	
 	if (arguments.length == 0)
 		console.error("Scm : push needs at least 1 argument.");
@@ -78,36 +78,19 @@ Scm.Core.prototype.push = function() { // TODO : verifier qu'il n'existe pas
 		{
 			obj = arguments[i];
 			elementNumber = ((this.layers.length > 0) ? (this.layers.length + 1) : (i + 1));
-			canvas = document.createElement('canvas');
-			canvas.setAttribute("id", "scmLayer" + elementNumber);
-
-			// set the htmlName for the new Layer
+			
+			// set new infos for the new Layer
 			arguments[i].htmlName += elementNumber;
+			arguments[i].elementNumber = elementNumber;
 
-			canvas.setAttribute("width", this.width);
-			canvas.setAttribute("height", this.height);
-			canvas.setAttribute("style", "z-index: " + elementNumber + "; position: absolute;");
-			this.content.appendChild(canvas);
+			// create the 2 canvas (double buffer)
+			style = "z-index: " + elementNumber + "; position: absolute;";
+			Scm.Utils.createDomElement("canvas", "a", "scmLayer"+elementNumber+"a", this.width, this.height, style);
+			Scm.Utils.createDomElement("canvas", "b", "scmLayer"+elementNumber+"b", this.width, this.height, style, false);
+
 			this.layers.push(obj);
 		}
 	}
-}
-
-/**
-* Get a layer previously created.
-* 
-* @method getLayer
-* @param name {String} Name of the Layer.
-* @return {Object} Return an Scm.Layer Object.
-*/
-
-Scm.Core.prototype.getLayer = function(name) {
-	
-	for (var i = 0; i != this.layers.length; i++)
-		if (this.layers[i].name == name)
-			return this.layers[i];
-				
-	console.error("Simple Canvas Manager : undefined reference to " + name + " layer !");	
 }
 
 /**
@@ -120,15 +103,46 @@ Scm.Core.prototype.getLayer = function(name) {
 
 Scm.Core.prototype.update = function() {
 
-	// Clear all layers
-	for (var i = 0; i != this.layers.length; i++)
-		if (typeof(this.layers[i]) != "undefined" && !this.layers[i].locked)
-			this.layers[i].clear();
-			
-	// Draw all objects
+	// Draw all objects on hidden buffer
 	for (var i = 0; i != this.layers.length; i++)
 		if (!this.layers[i].locked)
-			this.layers[i].drawAll();
+			this.layers[i].drawAll(this.hiddenBuffer);
+
+	// flip
+	document.getElementById(this.hiddenBuffer).style.display = 'block';
+	document.getElementById(this.displayedBuffer).style.display = 'none';
+
+	// Clear all layers of the new hidden buffer
+	for (var i = 0; i != this.layers.length; i++)
+		if (typeof(this.layers[i]) != "undefined" && !this.layers[i].locked)
+			this.layers[i].clear(this.displayedBuffer);
+
+	// change buffer
+	this.hiddenBuffer = ((this.hiddenBuffer == "a") ? ("b") : ("a"));
+	this.displayedBuffer = ((this.hiddenBuffer == "a") ? ("b") : ("a"));
 
 	Scm.Event.fire("coreUpdate"); // fire an coreUpdate event
 }
+
+Scm.Core.prototype.moveLayer = function(layer, pos) {
+
+	pos = ((pos == "top") ? (this.layers.length - 1) : (pos));
+	pos = ((pos == "bottom") ? (0) : (pos));
+
+	if (pos >= 0 && pos < this.layers.length)
+	{
+		// change pos in the core array
+		this.layers.splice(this.layers.indexOf(layer), 1);
+		this.layers.splice(pos, 0, layer);
+
+		// update all pos in html
+		for (var i = 0; i != this.layers.length; i++)
+		{
+			document.getElementById(this.layers[i].htmlName+this.displayedBuffer).setAttribute("style", "z-index: " + i + "; position: absolute;");
+			document.getElementById(this.layers[i].htmlName+this.hiddenBuffer).setAttribute("style", "z-index: " + i + "; position: absolute;");
+			this.layers[i].elementNumber = i;
+		}
+	}
+	else
+		console.error("Scm : undefined reference to pos " + pos);
+} 

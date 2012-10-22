@@ -1,5 +1,3 @@
-// TODO : undraw
-
 /**
 Provides ScmCore and ScmLayer.
 
@@ -21,6 +19,8 @@ Provides ScmCore and ScmLayer.
 Scm.Layer = function (locked) {
 	
 	this.htmlName = "scmLayer";
+	this.elementNumber;
+	this.currentBuffer = null;
 	this.locked = locked || false;
 	this.objects = [];
 	
@@ -34,11 +34,12 @@ Scm.Layer = function (locked) {
 * Can be very usefull for ensure compatibility with other canvas.
 * 
 * @method getHtmlElement
+* @deprecated
 * @return {Object} An Html object
 */
 
 Scm.Layer.prototype.getHtmlElement = function() {
-	return document.getElementById(this.htmlName);
+	return document.getElementById(this.htmlName+this.currentBuffer);
 }
 
 /**
@@ -46,6 +47,7 @@ Scm.Layer.prototype.getHtmlElement = function() {
 * Can be very usefull for ensure compatibility with other canvas.
 * 
 * @method getContext
+* @deprecated
 * @param type {String} Context type (often : "2d").
 * @return {Object} Provides methods and properties for natively drawing on the canvas.
 */
@@ -63,12 +65,18 @@ Scm.Layer.prototype.getContext = function(type) {
 */
 
 Scm.Layer.prototype.setBackgroundColor = function(color) { // autoUpdate = false;
-	var ctx = this.getContext("2d"),
-		width = ctx.canvas.clientWidth,
-		height = ctx.canvas.clientHeight;
+	var ctxA = document.getElementById(this.htmlName+"a").getContext("2d"),
+		ctxB = document.getElementById(this.htmlName+"b").getContext("2d"),
+		widthA = ctxA.canvas.width,
+		heightA = ctxA.canvas.height,
+		widthB = ctxB.canvas.width,
+		heightB = ctxB.canvas.height;
 	
-	ctx.fillStyle = color;
-	ctx.fillRect(0, 0, width, height);
+	// draw on the 2 canvas (double buffer)
+	ctxA.fillStyle = color;
+	ctxB.fillStyle = color;
+	ctxA.fillRect(0, 0, widthA, heightA);
+	ctxB.fillRect(0, 0, widthB, heightB);
 	this.locked = true;
 }
 
@@ -80,13 +88,16 @@ Scm.Layer.prototype.setBackgroundColor = function(color) { // autoUpdate = false
 * @param src {String} Relative or absolute url of an image.
 */
 
-Scm.Layer.prototype.setBackgroundImg = function(src) {	// autoUpdate = false;
-	var ctx = this.getContext("2d"),
-		img = new Image();
+Scm.Layer.prototype.setBackgroundImg = function(src) {
+
+	var img = new Image(),
+		htmlName = this.htmlName;
 		
- 	
  	img.onload = function() {
-		ctx.drawImage(img, 0, 0);
+
+ 		// draw on the 2 canvas (double buffer)
+		document.getElementById(htmlName+"a").getContext("2d").drawImage(img, 0, 0);
+		document.getElementById(htmlName+"b").getContext("2d").drawImage(img, 0, 0);
 	}
 	img.src = src;
 	this.locked = true;
@@ -223,22 +234,6 @@ Scm.Layer.prototype.draw = function () { // TODO : test
 	for (var i = 0; i < arguments.length; ++i)
 		if (!this.exist(arguments[i]))
 			this.objects.push(arguments[i]);
-	
-	// var ctx = this.getContext("2d");
-// 	
-	// if (object.alpha)
-	// {
-		// ctx.save();
-		// ctx.globalAlpha = object.alpha;
-	// }
-// 	
-	// if (object.color) 
-		// ctx.fillStyle = object.color;
-	// object.draw(ctx); // call the object's draw method
-	// //console.log(object);
-// 	
-	// if (object.alpha)
-		// ctx.restore();
 }
 
 Scm.Layer.prototype.erase = function (object) { // BETA
@@ -257,9 +252,9 @@ Scm.Layer.prototype.erase = function (object) { // BETA
 		console.error("Scm : Undefined reference to object.");
 } 
 
-Scm.Layer.prototype.drawAll = function() {
+Scm.Layer.prototype.drawAll = function(buffer) {
 
-	var ctx = this.getContext("2d"),
+	var ctx = document.getElementById(this.htmlName+buffer).getContext("2d"),
 		object;
 	
 	for (var i = 0; i != this.objects.length; i++)
@@ -303,11 +298,14 @@ Scm.Layer.prototype.drawAll = function() {
 * @method clear
 */
 
-Scm.Layer.prototype.clear = function() { // TODO : voir pour le locked
+Scm.Layer.prototype.clear = function(buffer) { // TODO : voir pour le locked
 	
-	var ctx = this.getContext("2d"),
-		width = ctx.canvas.clientWidth,
-		height = ctx.canvas.clientHeight;
+	// var ctx = this.getContext("2d"),
+		ctx = document.getElementById(this.htmlName+buffer).getContext("2d"),
+		width = ctx.canvas.width,
+		height = ctx.canvas.height;
+
+	//console.log(ctx);
 		
 	ctx.clearRect(0, 0, width, height);
 }
