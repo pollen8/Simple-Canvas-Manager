@@ -66,7 +66,7 @@ Scm.Event.on = function(type, callback) {
 		}
 	}
 
-	if (!found) //Javascript Event
+	if (!found) // Javascript Event
 	{
 		// Because SCM has an intern double buffer system
 		// We need to redefine the click event as a mouseup event.

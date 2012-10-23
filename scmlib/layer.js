@@ -204,19 +204,54 @@ Scm.Layer.prototype.exist = function(object) {
 * @return {Array} An Array of <a href="../modules/Drawable%20Objects.html">drawable objects</a>.
 */
 
-Scm.Layer.prototype.getAllObjects = function (type) { // TODO
+Scm.Layer.prototype.getAllObjects = function(filter, objects, justOne) { // TODO
 
-	// var array = [];
+	var parser = new Scm.Utils.DrawableParser(filter),
+		tokens = parser.getTokens(),
+		ret = [],
+		evalStr, next = false, idx = 3;
 
-	// type = type || "";
-	// for (var i = 0; i != this.objects.length; i++)
-	// {
-	// 	if (type == "" || typeof(this.objects[i]) == "Scm." + type)
-	// 		array.push(this.objects[i]);
-	// }
+	objects = objects || this.objects;
+	justOne = justOne || false;
 
-	return this.objects;
-	// return array;
+	for (var j = 0; j != objects.length; j++)
+	{
+		evalStr = "";
+		for (var i = 0; i != tokens.length; i++)
+		{
+			if (next)
+			{
+				evalStr += " '" + objects[j][tokens[i]] + "'";
+				next = false;
+			}
+			else if (i % idx == 0)
+			{
+				if (tokens[i] != "&&" && tokens[i] != "||")
+					evalStr += " '" + objects[j][tokens[i]] + "'";
+				else
+				{
+					evalStr += " " + tokens[i]
+					next = true;
+					idx += 1;
+				}
+			}
+			else
+				evalStr += " " + tokens[i];
+		}
+		if (eval(evalStr))
+		{
+			if (!justOne)
+				ret.push(objects[j]);
+			else
+				return objects[j];
+		}
+	}
+	return ret;
+}
+
+Scm.Layer.prototype.getOneObject = function(filter, objects, justOne) {
+
+	return this.getAllObjects(filter, objects, true);
 }
 
 /**
