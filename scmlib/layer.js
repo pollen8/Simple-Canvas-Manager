@@ -206,13 +206,20 @@ Scm.Layer.prototype.exist = function(object) {
 
 Scm.Layer.prototype.getAllObjects = function(filter, objects, justOne) { // TODO
 
+	justOne = justOne || false;
+	objects = objects || this.objects;
+	
+	if (!filter)
+	{
+		if (justOne)
+			return objects[0];
+		return objects;
+	}
+
 	var parser = new Scm.Utils.DrawableParser(filter),
 		tokens = parser.getTokens(),
 		ret = [],
 		evalStr, next = false, idx = 3;
-
-	objects = objects || this.objects;
-	justOne = justOne || false;
 
 	for (var j = 0; j != objects.length; j++)
 	{
