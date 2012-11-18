@@ -23,7 +23,8 @@ Scm.Event = {
 		"39": {type: "right_arrow", callback: null},
 		"40": {type: "down_arrow", callback: null}
 	},
-	scmNode: null
+	scmNode: null,
+	keys:[]
 };
 
 Scm.Event.init = function(scmNode) {
@@ -31,15 +32,46 @@ Scm.Event.init = function(scmNode) {
 	// letters
 	for (var i = 65; i <= 90; i++)
 		Scm.Event.ref[String(i)] = {type: String.fromCharCode(i + 32), callback: null};
-			
+				
 	document.onkeydown = function(e) {
-	 	var e = window.event || e;
 
-		if (typeof(Scm.Event.ref[e.keyCode]) != "undefined" && Scm.Event.ref[e.keyCode].callback)
-			(Scm.Event.ref[e.keyCode].callback)();
+		var keys = Scm.Event.keys;
+
+		e = window.event || e;
+		if (keys.indexOf(e.keyCode) < 0)
+			keys.push(e.keyCode);
+
+		/*for (var i = 0; i != keys.length; i++)
+			if (typeof(Scm.Event.ref[keys[i]]) != "undefined" && Scm.Event.ref[keys[i]].callback)
+				(Scm.Event.ref[keys[i]].callback)();*/
+	}
+
+	document.onkeyup = function(e) {
+
+		var keys = Scm.Event.keys;
+
+		e = window.event || e;
+		Scm.Event.keys.splice(keys.indexOf(e.keyCode), 1);
+
+		/*console.log(keys.length);
+		for (var i = 0; i != keys.length; i++)
+			if (typeof(Scm.Event.ref[keys[i]]) != "undefined" && Scm.Event.ref[keys[i]].callback)
+			{
+				console.log("done !");
+				(Scm.Event.ref[keys[i]].callback)();
+			}*/
 	}
 
 	Scm.Event.scmNode = scmNode;
+}
+
+Scm.Event.keysHandler = function() {
+
+	var keys = Scm.Event.keys;
+
+	for (var i = 0; i != keys.length; i++)
+			if (typeof(Scm.Event.ref[keys[i]]) != "undefined" && Scm.Event.ref[keys[i]].callback)
+				(Scm.Event.ref[keys[i]].callback)();
 }
 
 //TODO : rajouter un lien dans la doc vers la liste des key

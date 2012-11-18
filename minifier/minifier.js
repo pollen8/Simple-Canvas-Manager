@@ -9,7 +9,7 @@ var compressor = require('node-minify'),
 	util = require('util'),
 	minFile = "../scmlib/scmlib.min.js",
 	oSize = getSize(minFile),
-	build, version = "0.4.0";
+	build, version = "0.5.0";
 
 fs.readFile(minFile, function(err, data){
 	data = data.toString();

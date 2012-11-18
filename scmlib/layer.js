@@ -245,6 +245,7 @@ Scm.Layer.prototype.getAllObjects = function(filter, objects, justOne) { // TODO
 			else
 				evalStr += " " + tokens[i];
 		}
+		//console.log(evalStr);
 		if (eval(evalStr))
 		{
 			if (!justOne)
@@ -256,9 +257,38 @@ Scm.Layer.prototype.getAllObjects = function(filter, objects, justOne) { // TODO
 	return ret;
 }
 
-Scm.Layer.prototype.getOneObject = function(filter, objects, justOne) {
+Scm.Layer.prototype.getOneObject = function(filter, objects) {
 
 	return this.getAllObjects(filter, objects, true);
+}
+
+Scm.Layer.prototype.getClosestObject = function(filter, obj, objects) {
+
+	var objs = this.getAllObjects(filter, objects),
+		best = null, bestNbMoves = GLOBAL_SCM_WIDTH + GLOBAL_SCM_HEIGHT,
+		x, y;
+
+	for (var i = 0; i != objs.length; i++)
+	{
+		if (objs[i] != obj)
+		{
+			x = Math.abs(obj.x - objs[i].x);
+			y = Math.abs(obj.y - objs[i].y);
+
+			if (x == y && x < bestNbMoves)
+			{
+				bestNbMoves = x;
+				best = objs[i];
+			}
+			else if ((x + y) < bestNbMoves)
+			{
+				bestNbMoves = x + y;
+				best = objs[i];
+			}
+		}
+	}
+
+	return best;
 }
 
 /**
@@ -282,14 +312,18 @@ Scm.Layer.prototype.erase = function (object) { // BETA
 
 	var found = false;
 
-	for (var i = 0; i != this.objects.length; i++)
+	for (var i = 0; i != this.objects.length && !found; i++)
+	{
 		if (this.objects[i] == object)
 		{
-			console.log(this.objects.slice(i, 1));
-			this.objects = this.objects.slice(i, 1);
+			if (this.objects.length == 1)
+				this.objects = [];
+			else
+				this.objects.splice(i, 1);
 			found = true;
 		}
-			
+	}
+
 	if (!found)
 		console.error("Scm : Undefined reference to object.");
 } 
@@ -299,6 +333,9 @@ Scm.Layer.prototype.drawAll = function(buffer) {
 	var ctx = document.getElementById(this.htmlName+buffer).getContext("2d"),
 		object;
 	
+	// update scene if keys are down
+	Scm.Event.keysHandler();
+
 	for (var i = 0; i != this.objects.length; i++)
 	{
 		object = this.objects[i];
@@ -342,13 +379,10 @@ Scm.Layer.prototype.drawAll = function(buffer) {
 
 Scm.Layer.prototype.clear = function(buffer) { // TODO : voir pour le locked
 	
-	// var ctx = this.getContext("2d"),
-		ctx = document.getElementById(this.htmlName+buffer).getContext("2d"),
+	var ctx = document.getElementById(this.htmlName+buffer).getContext("2d"),
 		width = ctx.canvas.width,
 		height = ctx.canvas.height;
 
-	//console.log(ctx);
-		
 	ctx.clearRect(0, 0, width, height);
 }
 

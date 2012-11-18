@@ -19,6 +19,7 @@ var Drawable = function(x, y, color, alpha) { // TODO type
 	this.y = y;
 	this.color = color;
 	this.alpha = ((typeof(alpha) != "undefined") ? (alpha) : (1));
+	this.type = null;
 	this.currentEffect = {
 		duration: 0,
 		property: null,
@@ -176,6 +177,8 @@ Scm.Pixel = function(x, y, color, alpha) {
 	
 	// inherit from Drawable
 	Drawable.call(this, x, y, color, alpha);
+
+	this.type = "Pixel";
 }
 
 // inherit from Drawable
@@ -207,6 +210,7 @@ Scm.Rect = function(x, y, width, height, color, alpha) {
 	
 	this.width = width;
 	this.height = height;
+	this.type = "Rect";
 }
 
 // inherited from DRAWABLE
@@ -238,28 +242,32 @@ Scm.Rect.prototype.draw = function(ctx) {
 * @constructor
 * @param x {Integer} Vertical position.
 * @param y {Integer} Horizontal position.
-* @param radius {Integer} The circle's radius.
+* @param diameter {Integer} The circle's diameter.
 * @param color {String} A CSS Color value (like #00FF00).
 * @param [alpha=1] {Integer} An alpha value (between 0 and 1).
 */
 
-Scm.Circle = function(x, y, radius, color, alpha) {
+Scm.Circle = function(x, y, diameter, color, alpha) {
 	
 	// inherit from Drawable
 	Drawable.call(this, x, y, color, alpha);
 	
-	this.radius = radius;
-	this.diameter = radius * 2;
+	this.diameter = diameter;
+	this.type = "Circle";
 }
 
 // inherit from Drawable
 Scm.Utils.constructInheritance(Scm.Circle, Drawable);
 
 Scm.Circle.prototype.draw = function(ctx) {
-	ctx.beginPath();
-	ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.fill();
+
+	if (this.diameter >= 0)
+	{
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.diameter / 2, 0, Math.PI * 2, true);
+		ctx.closePath();
+		ctx.fill();
+	}
 }
 
 /**
@@ -287,6 +295,7 @@ Scm.Text = function(str, x, y, color, alpha) {
 	* @type String
 	*/
 	this.str = str;
+	this.type = "Text";
 }
 
 // inherit from Drawable
@@ -329,6 +338,7 @@ Scm.Utils.constructInheritance(Scm.Image, Drawable);
 
 Scm.Image.prototype.setSrc = function(src) {
 	this.src = src;
+	this.type = "Image";
 }
 
 Scm.Image.prototype.draw = function(ctx) {
