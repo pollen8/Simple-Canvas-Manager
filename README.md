@@ -21,8 +21,8 @@ Online Documentation
 soon
 
 
-Why SCM is powerfull ?
-----------------------
+Why SCM is powerful ?
+---------------------
 
 Assuming a simple example (live demo <a href="http://scm-library.olympe.in/demo/?demo=readmeDemo">here</a>).<br />
 This is how you can implement it with native javascript code :
